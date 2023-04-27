@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Product from "./components/Product";
+import Product from "./components//product/Product"
 
 const routes = [
-    {path: "/", component: Product}
+    {path: "/", component: Product},
 ]
 const router = createRouter({
     history: createWebHistory(),

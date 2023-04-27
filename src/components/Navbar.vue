@@ -1,69 +1,76 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"
-            >Home <span class="sr-only">(current)</span></a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Dropdown
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input
-          class="form-control mr-sm-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-          Search
-        </button>
-      </form>
+  <div>
+    <div class="header">
+      <h1>new app</h1>
+      <h3>address</h3>
     </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-style">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <router-link to="/">Product</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/order">Order</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/user">Users</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/account">Account</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/statisticalProduct"
+              >Statistical product</router-link
+            >
+          </li>
+          <li class="nav-item active">
+            <router-link to="/revenueProfit">Revenue profit</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/roles">Roles</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/accounts">Accounts</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "NavbarMain"
+  name: "NavbarMain",
 };
 </script>
 
-<style>
+<style scope>
+.header {
+  text-align: center;
+}
+.navbar-style {
+  margin: 5px;
+  height: 50px;
+  border-bottom: 1px #3e3e3e solid;
+}
+div nav div ul li {
+  border-radius: 7px;
+  background: #e0cbe6;
+  margin: 3px;
+}
+div nav div ul li:hover {
+  background: #3a57fc;
+  color: #fff;
+}
+div nav div ul li a {
+  color: rgb(131, 1, 125);
+  text-decoration: none;
+  margin: 8px;
+  font-size: 120%;
+}
+div nav div ul li:hover a {
+  color: #fff;
+  text-decoration: none;
+}
 </style>

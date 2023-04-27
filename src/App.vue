@@ -1,27 +1,38 @@
 <template>
-  <h1>new app</h1>
-  <Navbar />
-  <router-view />
+  <div>
+    <Navbar />
+    <router-view :key="restartRouterView" />
+  </div>
 </template>
 
 <script>
 import Navbar from "./components/Navbar.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
+  computed: {
+    ...mapGetters("ProductModule", ["getRestartRouterView"]),
+    restartRouterView() {
+      return this.getRestartRouterView;
+    },
+  },
   components: {
-    Navbar
-  }
-}
+    Navbar,
+  },
+};
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+div {
+  margin: 10px;
 }
 </style>
