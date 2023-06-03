@@ -188,7 +188,7 @@ export default {
           if (response.status == 1000) {
             this.setFieldsErrorMap(response.data);
           } else {
-            this.setMessageAlertForFormProductPopup("error "+response.data.status +" :"+response.data.error);
+            this.setMessageAlertForFormProductPopup("error "+response.data.status +" :"+response.data.message);
             this.setActiveAlertForFormProductPopup(true);
           }
         }
@@ -212,7 +212,7 @@ export default {
           if (response.status == 1000) {
             this.setFieldsErrorMap(response.data);
           } else {
-            this.setMessageAlertForFormProductPopup("error :"+response.data.status +" :"+response.data.error);
+            this.setMessageAlertForFormProductPopup("error :"+response.data.status +" :"+response.data.message);
             this.setActiveAlertForFormProductPopup(true);
           }
         }

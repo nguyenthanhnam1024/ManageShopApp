@@ -1,84 +1,83 @@
 <template>
-  <div class="product-corver">
-    <span>Danh sách sản phẩm</span>
-    <div class="wrapper-search">
-      <input
-        class="form-control mr-sm-2"
-        type="text"
-        v-model="keyword"
-        placeholder="keyword..."
-        @keyup="keywordNull"
+  <div>
+    <div></div>
+    <div class="corver">
+      <span>Danh sách sản phẩm</span>
+      <div class="wrapper-search">
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          v-model="keyword"
+          placeholder="keyword..."
+          @keyup="keywordNull"
+        />
+        <button
+          class="btn btn-outline-success my-2 my-sm-0"
+          type="button"
+          @click="searchByKeyword"
+        >
+          Search
+        </button>
+      </div>
+      <div class="table-wrapper">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">stt</th>
+              <th scope="col">name</th>
+              <th scope="col">price</th>
+              <th scope="col">described</th>
+              <th scope="col">date of manufacture</th>
+              <th scope="col">expiry</th>
+              <th scope="col">origin</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="product in productList" :key="product.id">
+              <td>{{ count }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }} vnđ</td>
+              <td>{{ product.described }}</td>
+              <td>{{ product.dateOfManufacture }}</td>
+              <td>{{ product.expiry }}</td>
+              <td>{{ product.origin }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  @click="buttonUpdateProduct(product.id)"
+                >
+                  edit
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="deleteProductButton(product.id)"
+                >
+                  delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div class="div-create-object">
+        <button type="button" class="btn-create" @click="buttonCreateProduct">
+          Create product
+        </button>
+      </div>
+      <ConfirmDeleteProductPopup
+        :productName="productName"
+        :activeConfirmDeleteProductPopup="activeConfirmDeleteProductPopup"
+        @confirmNoDelete="confirmNoDelete"
+        @confirmDeleteProduct="confirmDeleteProduct"
       />
-      <button
-        class="btn btn-outline-success my-2 my-sm-0"
-        type="button"
-        @click="searchByKeyword"
-      >
-        Search
-      </button>
+      <FormProductPopupVue />
     </div>
-    <div class="table-product">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">stt</th>
-            <th scope="col">name</th>
-            <th scope="col">price</th>
-            <th scope="col">described</th>
-            <th scope="col">date of manufacture</th>
-            <th scope="col">expiry</th>
-            <th scope="col">origin</th>
-            <th colspan="2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="product in productList" :key="product.id">
-            <td>{{ count }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }} vnđ</td>
-            <td>{{ product.described }}</td>
-            <td>{{ product.dateOfManufacture }}</td>
-            <td>{{ product.expiry }}</td>
-            <td>{{ product.origin }}</td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-warning"
-                @click="buttonUpdateProduct(product.id)"
-              >
-                edit
-              </button>
-            </td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-danger"
-                @click="deleteProductButton(product.id)"
-              >
-                delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <br />
-    <div class="div-create-product">
-      <button
-        type="button"
-        class="btn-create-product"
-        @click="buttonCreateProduct"
-      >
-        Create product
-      </button>
-    </div>
-    <ConfirmDeleteProductPopup
-      :productName="productName"
-      :activeConfirmDeleteProductPopup="activeConfirmDeleteProductPopup"
-      @confirmNoDelete="confirmNoDelete"
-      @confirmDeleteProduct="confirmDeleteProduct"
-    />
-    <FormProductPopupVue />
   </div>
 </template>
 
@@ -88,6 +87,8 @@ import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import ConfirmDeleteProductPopup from "./ConfirmDeleteProductPopup.vue";
 import FormProductPopupVue from "./FormProductPopup.vue";
+import Common from "@/Common";
+import "@/BuildTable.css";
 
 export default {
   name: "Product-Vue",
@@ -150,7 +151,6 @@ export default {
       this.activeConfirmDeleteProductPopup = false;
     },
     async confirmDeleteProduct() {
-      this.activeConfirmDeleteProductPopup = false;
       const response = await this.deleteProduct();
       if (response.status == 200) {
         this.setRestartRouterView(!this.getRestartRouterView);
@@ -165,6 +165,7 @@ export default {
         }
       }
       this.setActiveAlertProductPopup(true);
+      this.activeConfirmDeleteProductPopup = false;
     },
     searchByKeyword() {
       if (this.keyword != null && this.keyword != "") {
@@ -177,16 +178,18 @@ export default {
       if (this.keyword == null || this.keyword == "") {
         this.setRestartRouterView(!this.getRestartRouterView);
       }
-    }
+    },
+  },
+  created() {
+    this.fetchProductList(this.idShop);
+    const common = new Common();
+    common.redirectByJwtAndUrl();
   },
   computed: {
     ...mapGetters("ProductModule", ["getProductList", "getRestartRouterView"]),
     productList() {
       return this.getProductList;
     },
-  },
-  created() {
-    this.fetchProductList(this.idShop);
   },
   components: {
     ConfirmDeleteProductPopup,
@@ -196,42 +199,4 @@ export default {
 </script>
 
 <style scoped>
-.wrapper-search input {
-  width: 220px;
-  margin-left: auto;
-}
-.wrapper-search {
-  text-align: right;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-.div-create-product {
-  margin: 5px;
-}
-div span {
-  font-size: 140%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: blue;
-  margin-left: 0%;
-}
-.btn-create-product {
-  color: #fff;
-  background-color: rgb(3, 145, 18);
-  padding: 5px;
-  width: 150px;
-  border: hidden;
-  border-radius: 9px;
-  font-size: 130%;
-}
-.product-corver {
-  margin-left: 25px;
-  margin-right: 25px;
-}
-.table-product {
-  height: 400px;
-  overflow-y: scroll;
-  border: 1px solid greenyellow;
-}
 </style>

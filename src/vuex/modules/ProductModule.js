@@ -21,7 +21,6 @@ const state = {
     fieldsErrorMap: [],
     activeAlertForFormProductPopup: false,
     messageAlertForFormProductPopup: "",
-    activeConfirmDeleteProductPopupInModule: false,
 }
 
 const mutations = {
@@ -90,7 +89,14 @@ const actions = {
     async saveProduct() {
         try {
             const product = state.productEdit
-            return await axios.post('http://localhost:8088/product/save', product);
+            const user = state.user
+            const roleName = state.roleName
+            const data = {
+                product: product,
+                user: user,
+                roleName: roleName
+            }
+            return await axios.post('http://localhost:8088/product/save', data);
         } catch (error) {
             return error.response
         }

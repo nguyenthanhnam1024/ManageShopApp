@@ -1,59 +1,58 @@
 <template>
   <div class="wrapper-popup" :class="saveConfirmtPopup">
     <div class="save-product-popup">
-      <h3>{{ messageAlertPopup }}</h3>
+      <h3>You register success. Click oke to login !</h3>
       <div class="buttons-control">
-        <button class="btn button-yes" @click="Oke">Oke</button>
+        <button class="btn button-yes" @click="oke">oke</button>
+        <button class="btn button-no" @click="cancel">cancel</button>
       </div>
     </div>
   </div>
 </template>
-    
-    <script>
-import { mapGetters } from "vuex";
-import { mapMutations } from "vuex";
-
+      
+      <script>
 export default {
-  name: "AlertPopup",
+  name: "ConfirmPopupOfSecurity",
+  props: {
+    activeConfirmPopupOfSecurity: { type: Boolean },
+  },
   methods: {
-    ...mapMutations("ProductModule", ["setActiveAlertPopup"]),
-    Oke() {
-      this.setActiveAlertPopup(false)
+    oke() {
+      this.$emit("oke");
+    },
+    cancel() {
+      this.$emit("cancel");
     },
   },
   computed: {
-    ...mapGetters("ProductModule", [
-      "getActiveCAlertPopup",
-      "getMessageAlertPopup",
-    ]),
     saveConfirmtPopup() {
       return {
-        "open-popup": this.getActiveCAlertPopup,
+        "open-popup": this.activeConfirmPopupOfSecurity,
       };
-    },
-    messageAlertPopup() {
-      return this.getMessageAlertPopup;
     },
   },
 };
 </script>
-    
-    <style scoped>
+      
+      <style scoped>
 .buttons-control button {
-    width: 80px;
-    height: 45px;
-    text-align: center;
-    margin:30px;
+  width: 80px;
+  height: 45px;
+  text-align: center;
+  margin: 30px;
 }
 .buttons-control {
-    margin-top: 50px;
-}    
+  margin-top: 50px;
+}
 h3 {
   margin-top: 40px;
   height: 20px;
   padding: 10px;
 }
-
+.button-no {
+  background-color: rgb(251, 129, 15);
+  margin-right: auto;
+}
 .button-yes {
   background-color: rgb(81, 246, 10);
 }
@@ -70,12 +69,14 @@ h3 {
   background-color: #fff;
 }
 .wrapper-popup {
+  z-index: 9999;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .wrapper-popup.open-popup {
   opacity: 1;

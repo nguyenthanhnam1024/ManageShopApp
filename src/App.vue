@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Navbar />
-    <router-view :key="restartRouterView" />
+    <Navbar :class="manageActiveNavbar" />
+    <router-view :key="restartRouterView" class="router"/>
   </div>
 </template>
 
@@ -11,12 +11,24 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "App",
+  data() {
+    return {};
+  },
   computed: {
     ...mapGetters("ProductModule", ["getRestartRouterView"]),
+    ...mapGetters("AppVueModule", ["getInactiveNavbar"]),
+
     restartRouterView() {
       return this.getRestartRouterView;
     },
+
+    manageActiveNavbar() {
+      return {
+        status: this.getInactiveNavbar,
+      };
+    },
   },
+
   components: {
     Navbar,
   },
@@ -34,5 +46,12 @@ export default {
 }
 div {
   margin: 10px;
+}
+.status {
+  display: none;
+}
+.router {
+  overflow-y: scroll;
+  height: 540.5px;
 }
 </style>
