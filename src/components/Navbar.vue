@@ -1,29 +1,37 @@
 <template>
   <div>
-    <Alert 
-    :activeAlertVue="activeAlertVue"
-    :messageAlertVue="messageAlertVue"
-    @alertOke="alertOke"
+    <Alert
+      :activeAlertVue="activeAlertVue"
+      :messageAlertVue="messageAlertVue"
+      @alertOke="alertOke"
     />
-    <Confirm 
-     :activeConfirm="activeConfirm"
-     @confirmYes="confirmYes"
-     @confirmNo="confirmNo"
+    <Confirm
+      :activeConfirm="activeConfirm"
+      @confirmYes="confirmYes"
+      @confirmNo="confirmNo"
     />
     <div class="header">
       <div class="header-left">
         <h1>{{ getShop.name }}</h1>
-        <h5 :class="setActiveInfoShopByIdShop">Address: {{ getShop.address }}</h5>
+        <h5 :class="setActiveInfoShopByIdShop">
+          Address: {{ getShop.address }}
+        </h5>
       </div>
       <div class="header-right">
-        <h4 :class="setActiveInfoShopByIdShop">Hotline: {{ getShop.hotline }}</h4>
+        <h4 :class="setActiveInfoShopByIdShop">
+          Hotline: {{ getShop.hotline }}
+        </h4>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-style">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"
-          :class="[ setActiveBtnNavbarByRoleMANAGE, setActiveBtnNavbarByRoleSTAFF ]"
+          <li
+            class="nav-item"
+            :class="[
+              setActiveBtnNavbarByRoleMANAGE,
+              setActiveBtnNavbarByRoleSTAFF,
+            ]"
           >
             <router-link
               to="/shop"
@@ -33,9 +41,7 @@
               >Shops</router-link
             >
           </li>
-          <li class="nav-item"
-            :class="setActiveBtnNavbarByRoleADMIN"
-          >
+          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
             <router-link
               to="/product"
               class="nav-link"
@@ -44,9 +50,7 @@
               >Product</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="[setActiveBtnNavbarByRoleSTAFF]"
-          >
+          <li class="nav-item" :class="[setActiveBtnNavbarByRoleSTAFF]">
             <router-link
               to="/user"
               class="nav-link"
@@ -55,9 +59,7 @@
               >Users</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="setActiveBtnNavbarByRoleADMIN"
-          >
+          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
             <router-link
               to="/receipt"
               class="nav-link"
@@ -66,9 +68,7 @@
               >Receipt</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="setActiveBtnNavbarByRoleADMIN"
-          >
+          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
             <router-link
               to="/deliveryBill"
               class="nav-link"
@@ -77,9 +77,7 @@
               >Delivery bill</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="setActiveBtnNavbarByRoleADMIN"
-          >
+          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
             <router-link
               to="/order"
               class="nav-link"
@@ -88,9 +86,7 @@
               >Order</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="setActiveBtnNavbarByRoleADMIN"
-          >
+          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
             <router-link
               to="/statisticalProduct"
               class="nav-link"
@@ -99,8 +95,12 @@
               >Statistical product</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="[setActiveBtnNavbarByRoleADMIN, setActiveBtnNavbarByRoleSTAFF]"
+          <li
+            class="nav-item"
+            :class="[
+              setActiveBtnNavbarByRoleADMIN,
+              setActiveBtnNavbarByRoleSTAFF,
+            ]"
           >
             <router-link
               to="/revenueProfit"
@@ -110,8 +110,12 @@
               >Revenue profit</router-link
             >
           </li>
-          <li class="nav-item"
-          :class="[setActiveBtnNavbarByRoleMANAGE, setActiveBtnNavbarByRoleSTAFF]"
+          <li
+            class="nav-item"
+            :class="[
+              setActiveBtnNavbarByRoleMANAGE,
+              setActiveBtnNavbarByRoleSTAFF,
+            ]"
           >
             <router-link
               to="/roles"
@@ -144,9 +148,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
-import { mapMutations } from "vuex";
 import Alert from "./Alert.vue";
-import Confirm from "./Confirm.vue"
+import Confirm from "./Confirm.vue";
 
 export default {
   name: "NavbarMain",
@@ -154,7 +157,7 @@ export default {
   components: {
     Alert,
     Confirm,
-},
+  },
 
   data() {
     return {
@@ -176,30 +179,31 @@ export default {
 
   methods: {
     ...mapActions("SecurityModule", ["logout"]),
-    ...mapMutations("SecurityModule", ["setAccessToken"]),
 
     clickLogout() {
-      this.activeConfirm = true
+      this.activeConfirm = true;
     },
 
     async confirmYes() {
       const response = await this.logout();
       if (response.status == 200) {
-        this.setAccessToken("");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("user");
+        localStorage.removeItem("shop");
         this.$router.push({ path: "/" });
       } else {
-        this.activeAlertVue = true
-        this.messageAlertVue = response.data
+        this.activeAlertVue = true;
+        this.messageAlertVue = response.data;
       }
-      this.activeConfirm = false
+      this.activeConfirm = false;
     },
 
     alertOke() {
-      this.activeAlertVue = false
+      this.activeAlertVue = false;
     },
 
     confirmNo() {
-      this.activeConfirm = false
+      this.activeConfirm = false;
     },
 
     BtnProduct() {
@@ -325,48 +329,48 @@ export default {
   },
 
   computed: {
-    ...mapGetters("SecurityModule", ["getUser", "getShop", "getAccessToken"]),
+    ...mapGetters("SecurityModule", ["getUser", "getShop"]),
 
     setActiveBtnNavbarByRoleADMIN() {
       if (this.getUser.role == "ADMIN" && this.getShop.id == 0) {
         return {
-          'displayNoneForBtn': true,
+          displayNoneForBtn: true,
         };
       }
       return {
-        'displayNoneForBtn': false,
+        displayNoneForBtn: false,
       };
     },
 
     setActiveBtnNavbarByRoleMANAGE() {
       if (this.getUser.role == "MANAGE") {
         return {
-          'displayNoneForBtn': true,
+          displayNoneForBtn: true,
         };
       }
       return {
-        'displayNoneForBtn': false,
+        displayNoneForBtn: false,
       };
     },
 
     setActiveBtnNavbarByRoleSTAFF() {
       if (this.getUser.role == "STAFF") {
         return {
-          'displayNoneForBtn': true,
+          displayNoneForBtn: true,
         };
       }
       return {
-        'displayNoneForBtn': false,
+        displayNoneForBtn: false,
       };
     },
     setActiveInfoShopByIdShop() {
       if (this.getShop.id == 0) {
         return {
-          'displayNoneForBtn': true,
+          displayNoneForBtn: true,
         };
       }
       return {
-        'displayNoneForBtn': false,
+        displayNoneForBtn: false,
       };
     },
   },

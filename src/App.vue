@@ -15,8 +15,8 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("ProductModule", ["getRestartRouterView"]),
     ...mapGetters("AppVueModule", ["getInactiveNavbar"]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView"]),
 
     restartRouterView() {
       return this.getRestartRouterView;

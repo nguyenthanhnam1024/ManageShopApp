@@ -31,22 +31,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="product in productList" :key="product.id">
-              <td>{{ count }}</td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-              <td>{{ product.expiry }}</td>
-              <td>{{ product.origin }}</td>
+            <tr v-for="(shop, index) in shopList" :key="shop.id">
+              <td>{{ index+1 }}</td>
+              <td>{{ shop.name }}</td>
+              <td>{{ shop.address }}</td>
+              <td>{{ shop.hotline }}</td>
               <td>
                 <button
                   type="button"
                   class="btn btn-warning"
-                  @click="buttonUpdateShop(product.id)"
+                  @click="buttonUpdateShop()"
                 >
                   edit
                 </button>
               </td>
-              <td>
+              <td class="box-contain-button">
                 <button
                   type="button"
                   class="btn btn-danger"
@@ -66,25 +65,97 @@
         </button>
       </div>
     </div>
+    <FormSaveAndEditShopPopup />
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-import Common from "@/Common";
-import "@/BuildTable.css";
+import Common from "../common/Common";
+import "../common/BuildTable.css";
+import { mapActions, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import FormSaveAndEditShopPopup from "./FormSaveAndEditShopPopup.vue";
 
 export default {
   name: "ShopVue",
-  methods: {
-    ...mapMutations("AppVueModule", ["setInactiveNavbar"]),
+
+  components: {
+    FormSaveAndEditShopPopup,
   },
+
+  data() {
+    return {
+      count:0,
+      keyword: "",
+    }
+  },
+
+  methods: {
+    ...mapActions("ShopModule", ["fetchShopList", "searchShopByKeyword"]),
+    ...mapMutations("AppVueModule", ["setRestartRouterView"]),
+    ...mapMutations("ShopModule", ["setActiveOfPopup", "setStateBtnSaveOfForm", "setStateBtnUpdateOfForm"]),
+
+    addCount() {
+      return this.count++;
+    },
+
+    async searchByKeyword() {
+      const data = {
+        keyword: this.keyword, 
+        user: JSON.parse(JSON.stringify(this.getUser))
+      }
+      if (this.keyword != null && this.keyword != "") {
+        await this.searchShopByKeyword(data);
+      } else {
+        this.setRestartRouterView(!this.getRestartRouterView);
+      }
+    },
+
+    keywordNull() {
+      if (this.keyword == null || this.keyword == "") {
+        this.setRestartRouterView(!this.getRestartRouterView);
+      }
+    },
+
+    buttonUpdateShop() {
+      this.setActiveOfPopup(true)
+      this.setStateBtnSaveOfForm(true)
+      this.setStateBtnUpdateOfForm(false)
+    },
+
+    buttonCreateShop() {
+      this.setActiveOfPopup(true)
+      this.setStateBtnSaveOfForm(false)
+      this.setStateBtnUpdateOfForm(true)
+    },
+  },
+
   created() {
     const common = new Common();
     common.redirectByJwtAndUrl();
+    this.fetchShopList();
   },
+
+  computed: {
+    ...mapGetters("ShopModule", ["getShopList"]),
+    ...mapGetters("SecurityModule", ["getUser"]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView"]),
+
+    shopList() {
+      return this.getShopList;
+    },
+
+    user() {
+      return this.getUser;
+    },
+  }
 };
 </script>
 
 <style scoped>
+.box-contain-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

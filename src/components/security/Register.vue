@@ -177,7 +177,7 @@ import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
 import AlertSecurityPopup from "./AlertSecurityPopup.vue";
 import ConfirmPopupOfRegisterSecurity from "./ConfirmPopupOfRegisterSecurity.vue";
-import Common from "@/Common";
+import Common from "../common/Common";
 
 export default {
   name: "Register-vue",

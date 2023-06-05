@@ -16,4 +16,3 @@ axios.interceptors.request.use(function (config) {
     }
     return config;
 });
-

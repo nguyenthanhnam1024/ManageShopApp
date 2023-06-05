@@ -47,7 +47,7 @@ import { mapActions } from "vuex";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import AlertSecurityPopup from "./AlertSecurityPopup.vue";
-import Common from "@/Common";
+import Common from "../common/Common";
 
 export default {
   name: "Login-vue",

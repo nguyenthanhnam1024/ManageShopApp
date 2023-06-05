@@ -87,8 +87,8 @@ import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import ConfirmDeleteProductPopup from "./ConfirmDeleteProductPopup.vue";
 import FormProductPopupVue from "./FormProductPopup.vue";
-import Common from "@/Common";
-import "@/BuildTable.css";
+import Common from "../common/Common";
+import "../common/BuildTable.css";
 
 export default {
   name: "Product-Vue",

@@ -64,6 +64,9 @@ const actions = {
             commit("setUser", response.data)
             commit("setShop", response.data.shop)
             commit("setAccessToken", response.headers.get("Authorization"))
+            localStorage.setItem('user', JSON.stringify(response.data))
+            localStorage.setItem('shop', JSON.stringify(response.data.shop))
+            localStorage.setItem('accessToken', response.headers.get("Authorization"))
             return response
         } catch (error) {
             return error.response
