@@ -3,6 +3,9 @@ import ProductModule from "./modules/ProductModule";
 import SecurityModule from "./modules/SecurityModule";
 import AppVueModule from "./modules/AppVueModule";
 import ShopModule from "./modules/ShopModule";
+import RoleModule from "./modules/RoleModule";
+import UserModule from "./modules/UserModule";
+import AccountModule from "./modules/AccountModule";
 
 export default new Vuex.Store({
     modules: {
@@ -10,5 +13,8 @@ export default new Vuex.Store({
         SecurityModule,
         AppVueModule,
         ShopModule,
+        RoleModule,
+        UserModule,
+        AccountModule,
     }
 })

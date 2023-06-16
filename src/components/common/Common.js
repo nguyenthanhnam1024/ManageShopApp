@@ -28,5 +28,8 @@ export default class Common {
                 router.push({ path: "/" })
             }
         }
+        if (currentURL == "http://localhost:8080/shop") {
+            store.commit('SecurityModule/setShop', JSON.parse(localStorage.getItem('shop')))
+        }
     }
 }

@@ -2,51 +2,63 @@
   <div class="wrapper-popup" :class="activeFormPopup">
     <div class="box">
       <form>
-        <p>Information shop</p>
+        <p>Profile</p>
         <div>
           <label for="name"
-            >Name Shop:
+            >Name:
             <span class="messageFieldError">{{
-              fieldsErrorMap["shop.name"]
+              fieldsErrorMap.name
+            }}</span></label
+          >
+          <input type="text" id="name" v-model="getRequestUpdateUser.name" />
+        </div>
+        <div>
+          <label for="name"
+            >Age:
+            <span class="messageFieldError">{{
+              fieldsErrorMap.age
+            }}</span></label
+          >
+          <input type="text" id="name" v-model="getRequestUpdateUser.age" />
+        </div>
+        <div>
+          <label for="name"
+            >Email:
+            <span class="messageFieldError">{{
+              fieldsErrorMap.email
+            }}</span></label
+          >
+          <input type="text" id="name" v-model="getRequestUpdateUser.email" />
+        </div>
+        <div>
+          <label for="name"
+            >Phone number:
+            <span class="messageFieldError">{{
+              fieldsErrorMap.phoneNumber
             }}</span></label
           >
           <input
             type="text"
             id="name"
-            placeholder="Shop name"
-            v-model="getShop.name"
+            v-model="getRequestUpdateUser.phoneNumber"
           />
         </div>
         <div>
           <label for="Address"
             >Address:
             <span class="messageFieldError">{{
-              fieldsErrorMap["shop.address"]
+              fieldsErrorMap.address
             }}</span></label
           >
-          <input type="text" id="Address" v-model="getShop.address" />
-        </div>
-        <div>
-          <label for="hotline"
-            >Hotline:
-            <span class="messageFieldError">{{
-              fieldsErrorMap["shop.hotline"]
-            }}</span></label
-          >
-          <input type="text" id="hotline" v-model="getShop.hotline" />
+          <input
+            type="text"
+            id="Address"
+            v-model="getRequestUpdateUser.address"
+          />
         </div>
         <button
           type="button"
           class="btn btn-success button-save"
-          :class="stateBtnSave"
-          @click="confirmSave"
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          class="btn btn-success button-save"
-          :class="stateBtnUpdate"
           @click="confirmUpdate"
         >
           Update
@@ -62,23 +74,23 @@
       @confirmNoFromConfirmCommon="confirmNoFromConfirmCommon"
       @confirmYesFromConfirmCommon="confirmYesFromConfirmCommon"
     />
-    <AlertCommon 
+    <AlertCommon
       :activeAlertCommon="activeAlertCommon"
       :messageAlertCommon="messageAlertCommon"
       @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
     />
   </div>
 </template>
-  
-  <script>
+    
+    <script>
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
-import ConfirmCommonVue from "../common/ConfirmCommon.vue";
 import { mapActions } from "vuex";
+import ConfirmCommonVue from "../common/ConfirmCommon.vue";
 import AlertCommon from "../common/AlertCommon.vue";
 
 export default {
-  name: "FormShopPopup",
+  name: "FormUpdateProfile",
 
   components: {
     ConfirmCommonVue,
@@ -95,43 +107,28 @@ export default {
   },
 
   methods: {
-    ...mapMutations("ShopModule", ["setActiveOfPopup", "setShop"]),
-    ...mapActions("ShopModule", ["saveShop", "updateShop"]),
+    ...mapMutations("AccountModule", ["setStateOfConfirmUpdateProfile"]),
+    ...mapActions("AccountModule", ["updateProfile"]),
     ...mapMutations("SecurityModule", ["setFieldsErrorMap"]),
     ...mapMutations("AppVueModule", ["setRestartRouterView"]),
 
     confirmUpdate() {
       this.activeConfirmCommon = true;
-      this.messageConfirmCommon = "you sure want update ?";
+      this.messageConfirmCommon = "you sure want update progile ?";
     },
 
     ClickOkeFromAlertCommon() {
-      this.activeAlertCommon = false
-    },
-
-    resetForm() {
-      this.setShop({
-        id: null,
-        name: null,
-        address: null,
-        hotline: null,
-      });
-      this.setFieldsErrorMap([]);
+      this.activeAlertCommon = false;
     },
 
     async confirmYesFromConfirmCommon() {
-      let response = null;
-      if (this.getStateBtnSaveOfForm == false) {
-        response = await this.saveShop()
-      } 
-      if (this.getStateBtnUpdateOfForm == false) {
-        response = await this.updateShop()
-      } 
+      const response = await this.updateProfile();
+      console.log(response);
       this.activeConfirmCommon = false;
       if (response.status == 200) {
-        this.setActiveOfPopup(false);
+        this.setStateOfConfirmUpdateProfile(false);
         this.setRestartRouterView(!this.getRestartRouterView);
-        this.resetForm();
+        this.setFieldsErrorMap([]);
       } else {
         if (response.status == 1000) {
           this.setFieldsErrorMap(response.data);
@@ -147,22 +144,16 @@ export default {
     },
 
     comeBack() {
-      this.setActiveOfPopup(false);
-      this.resetForm();
-    },
-
-    confirmSave() {
-      this.activeConfirmCommon = true;
-      this.messageConfirmCommon = "you sure want save ?";
+      this.setStateOfConfirmUpdateProfile(false);
+      this.$emit("combackFromFormUpdateProfile");
+      this.setFieldsErrorMap([]);
     },
   },
 
   computed: {
-    ...mapGetters("ShopModule", [
-      "getActiveOfPopup",
-      "getStateBtnSaveOfForm",
-      "getStateBtnUpdateOfForm",
-      "getShop",
+    ...mapGetters("AccountModule", [
+      "getRequestUpdateUser",
+      "getStateOfConfirmUpdateProfile",
     ]),
     ...mapGetters("SecurityModule", ["getUser", "getFieldsErrorMap"]),
     ...mapGetters("AppVueModule", ["getRestartRouterView"]),
@@ -173,26 +164,14 @@ export default {
 
     activeFormPopup() {
       return {
-        "open-popup": this.getActiveOfPopup,
-      };
-    },
-
-    stateBtnSave() {
-      return {
-        "display-none": this.getStateBtnSaveOfForm,
-      };
-    },
-
-    stateBtnUpdate() {
-      return {
-        "display-none": this.getStateBtnUpdateOfForm,
+        "open-popup": this.getStateOfConfirmUpdateProfile,
       };
     },
   },
 };
 </script>
-  
-  <style scoped>
+    
+    <style scoped>
 div div form p {
   font-size: 20px;
   font-weight: bold;
@@ -208,9 +187,6 @@ div div form div label {
 .button-save {
   width: 90px;
   margin-left: 40px;
-}
-.display-none {
-  display: none;
 }
 .button-comback {
   margin-left: 60px;
@@ -228,8 +204,8 @@ div div form div label {
   flex-direction: column;
 }
 .box {
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 450px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1.4);

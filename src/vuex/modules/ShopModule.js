@@ -1,5 +1,4 @@
 import axios from "axios"
-import store from "../store"
 
 const state = {
     shopList: null,
@@ -12,6 +11,7 @@ const state = {
         address: null,
         hotline: null,
     },
+    idShopAsDelete: null,
 }
 
 const mutations = {
@@ -20,6 +20,7 @@ const mutations = {
     setStateBtnSaveOfForm(state, stateBtnSaveOfForm) { state.stateBtnSaveOfForm = stateBtnSaveOfForm },
     setStateBtnUpdateOfForm(state, stateBtnUpdateOfForm) { state.stateBtnUpdateOfForm = stateBtnUpdateOfForm },
     setShop(state, shop) { state.shop = shop },
+    setIdShopAsDelete(state, id) { state.idShopAsDelete = id },
 }
 
 const actions = {
@@ -30,13 +31,13 @@ const actions = {
                 commit("setShopList", response.data)
             }
         } catch (error) {
-            error.response
+            return error.response
         }
     },
 
-    async searchShopByKeyword({ commit }, datas) {
+    async searchShopByKeyword({ commit }, keyword) {
         try {
-            const response = await axios.post("http://localhost:8088/shop/getByKeyword?keyword=" + datas.keyword, datas.user)
+            const response = await axios.get("http://localhost:8088/shop/getByKeyword?keyword=" + keyword)
             if (response.status == 200) {
                 commit("setShopList", response.data)
             }
@@ -46,25 +47,36 @@ const actions = {
     },
 
     async saveShop() {
-        const user = store.getters['SecurityModule/getUser']
-        const data = {
-            shop: state.shop,
-            responseLogin: JSON.parse(JSON.stringify(user))
-        }
         try {
-            return await axios.post("http://localhost:8088/shop/save", data)
+            return await axios.post("http://localhost:8088/shop/save", state.shop)
         } catch (error) {
             return error.response
         }
     },
 
-    async updateShop(user) {
-        const data = {
-            shop: state.shop,
-            user: user,
-        }
+    async getShopById({ commit }, id) {
         try {
-            return await axios.put("http://localhost:8088/shop/update", data)
+            const response =  await axios.get("http://localhost:8088/shop/getById/" + id)
+            if (response.status == 200) {
+                commit("setShop", response.data)
+            }
+            return response
+        } catch (error) {
+            return error.response
+        }
+    },
+
+    async updateShop() {
+        try {
+            return await axios.put("http://localhost:8088/shop/update", state.shop)
+        } catch (error) {
+            return error.response
+        }
+    },
+
+    async deleteShop() {
+        try {
+            return await axios.delete("http://localhost:8088/shop/delete/"+state.idShopAsDelete)
         } catch (error) {
             return error.response
         }

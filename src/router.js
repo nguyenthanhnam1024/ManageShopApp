@@ -4,16 +4,22 @@ import Product from "./components/product/Product"
 import Login from "./components/security/Login"
 import Register from "./components/security/Register"
 import Shop from "./components/shop/Shop"
+import Role from "./components/role/Role"
+import User from "./components/user/User"
+import Account from "./components/account/Account"
 
 const routes = [
     {path: "/", component: Login},
     {path: "/register", component: Register},
     {path: "/product", component: Product},
     {path: "/shop", component: Shop},
+    {path: "/role", component: Role},
+    {path: "/user", component: User},
+    {path: "/account", component: Account},
 ]
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
 })
 
 export default router;

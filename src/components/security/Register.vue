@@ -200,6 +200,7 @@ export default {
       showPassword: false,
     };
   },
+
   methods: {
     ...mapActions("SecurityModule", ["registerUser"]),
     ...mapActions("ShopModule", ["fetchShopList"]),
@@ -208,6 +209,7 @@ export default {
       "setFieldsErrorMap",
     ]),
     ...mapMutations("AppVueModule", ["setInactiveNavbar"]),
+    
     async getShops() {
       this.fetchShopList();
       this.shopList = this.getShopList;
@@ -269,16 +271,18 @@ export default {
       this.showPassword = !this.showPassword;
     },
   },
+
   created() {
-    // this.getURL();
     this.getShops();
     this.setMapError();
     const common = new Common();
     common.redirectByJwtAndUrl();
   },
+
   computed: {
     ...mapGetters("SecurityModule", ["getFieldsErrorMap"]),
     ...mapGetters("ShopModule", ["getShopList"]),
+
     fieldsErrorMap() {
       return JSON.parse(JSON.stringify(this.getFieldsErrorMap));
     },

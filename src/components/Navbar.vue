@@ -31,6 +31,7 @@
             :class="[
               setActiveBtnNavbarByRoleMANAGE,
               setActiveBtnNavbarByRoleSTAFF,
+              setActiveBtnNavbarByRoleADMINInShop,
             ]"
           >
             <router-link
@@ -115,10 +116,11 @@
             :class="[
               setActiveBtnNavbarByRoleMANAGE,
               setActiveBtnNavbarByRoleSTAFF,
+              setActiveBtnNavbarByRoleADMINInShop,
             ]"
           >
             <router-link
-              to="/roles"
+              to="/role"
               class="nav-link"
               :class="{ afterClickBtn: activeHoverBtnRole }"
               @click="BtnRole"
@@ -127,7 +129,7 @@
           </li>
           <li class="nav-item">
             <router-link
-              to="/accounts"
+              to="/account"
               class="nav-link"
               :class="{ afterClickBtn: activeHoverBtnAccount }"
               @click="BtnAccount"
@@ -342,6 +344,17 @@ export default {
       };
     },
 
+    setActiveBtnNavbarByRoleADMINInShop() {
+      if (this.getShop.id != 0 ) {
+        return {
+          displayNoneForBtn: true,
+        };
+      }
+      return {
+        displayNoneForBtn: false,
+      };
+    },
+
     setActiveBtnNavbarByRoleMANAGE() {
       if (this.getUser.role == "MANAGE") {
         return {
@@ -388,7 +401,7 @@ export default {
 }
 
 h1 {
-  color: #4d5aec;
+  color: rgb(56, 56, 246);
   margin: 0;
 }
 
