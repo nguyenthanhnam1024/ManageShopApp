@@ -4,7 +4,7 @@
     <div class="corver">
       <span>Danh sách user</span>
       <div class="wrapper-search">
-        <div class="div-select-role">
+        <div class="div-select-role" :class="setStateForBlockSelectRole">
           <select
             id="select-option"
             class="form-control select-role"
@@ -214,7 +214,18 @@ export default {
     ]),
     ...mapGetters("RoleModule", ["getRoleNames"]),
     ...mapGetters("AppVueModule", ["getRestartRouterView"]),
-    ...mapGetters("SecurityModule", ["getUser"]),
+    ...mapGetters("SecurityModule", ["getUser", "getShop"]),
+
+    setStateForBlockSelectRole() {
+      if (this.getShop.id == 0) {
+        return {
+          "display-none": false,
+        };
+      }
+      return {
+        "display-none": true,
+      };
+    },
 
     disabledEdit() {
       if (this.getUser.role == "MANAGE") {

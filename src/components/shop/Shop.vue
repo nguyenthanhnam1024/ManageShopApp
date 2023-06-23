@@ -125,8 +125,9 @@ export default {
     ...mapMutations("SecurityModule", ["setShop"]),
 
     clickInShop(shop) {
+      localStorage.setItem("shop", JSON.stringify(shop));
       this.setShop(shop);
-      this.$router.push("/product")
+      this.$router.push("/product");
     },
 
     async confirmYesFromConfirmCommon() {

@@ -1,133 +1,92 @@
 import axios from "axios"
+import store from "../store"
 
 const state = {
     productList: [],
-    activeFormProductPopup: false,
-    buttonCreateInFormProductPopup: false,
-    buttonUpdateInFormProductPopup: false,
-    activeAlertProductPopup: false,
-    messageAlertProductPopup: "",
-    productEdit: {
+    activeFormProduct: false,
+    stateBtnSaveFormProduct: false,
+    stateBtnUpdateFormProduct: false,
+    product: {
         id: null,
-        name: "",
+        name: null,
         idShop: 1,
         price: null,
-        described: "",
-        dateOfManufacture: "",
-        expiry: "",
-        origin: ""
+        described: null,
+        dateOfManufacture: null,
+        expiry: null,
+        origin: null,
     },
-    restartRouterView: false,
-    fieldsErrorMap: [],
-    activeAlertForFormProductPopup: false,
-    messageAlertForFormProductPopup: "",
+    idProduct: null,
+    keywordForSearchProduct: null,
 }
 
 const mutations = {
-    setProductList(state, productList) {
-        state.productList = productList
-    },
-    setActiveFormProductPopup(state, isBoolean) {
-        state.activeFormProductPopup = isBoolean
-    },
-    setButtonCreateFormProductPopup(state, isBoolean) {
-        state.buttonCreateInFormProductPopup = isBoolean
-    },
-    setButtonUpdateFormProductPopup(state, isBoolean) {
-        state.buttonUpdateInFormProductPopup = isBoolean
-    },
-    setActiveAlertProductPopup(state, isBoolean) {
-        state.activeAlertProductPopup = isBoolean
-    },
-    setMessageAlertProductPopup(state, message) {
-        state.messageAlertProductPopup = message
-    },
-    setProductEdit(state, product) {
-        state.productEdit = product
-    },
-    setRestartRouterView(state, isBoolean) {
-        state.restartRouterView = isBoolean
-    },
-    setFieldsErrorMap(state, fieldsErrorMap) {
-        state.fieldsErrorMap = fieldsErrorMap
-    },
-    setActiveAlertForFormProductPopup(state, isBoolean) {
-        state.activeAlertForFormProductPopup = isBoolean
-    },
-    setMessageAlertForFormProductPopup(state, message) {
-        state.messageAlertForFormProductPopup = message
-    }
+    setProductList(state, productList) { state.productList = productList },
+    setActiveFormProduct(state, isBoolean) { state.activeFormProduct = isBoolean },
+    setStateBtnSaveFormProduct(state, isBoolean) { state.stateBtnSaveFormProduct = isBoolean },
+    setStateBtnUpdateFormProduct(state, isBoolean) { state.stateBtnUpdateFormProduct = isBoolean },
+    setProduct(state, product) { state.product = product },
+    setIdProduct(state, value) { state.idProduct = value },
+    setKeywordForSearchProduct(state, value ) { state.keywordForSearchProduct = value },
 }
 
 const actions = {
-    async fetchProductList({ commit }, shopId) {
+    async fetchProductList({ commit }) {
+        let shop = store.getters["SecurityModule/getShop"]
         try {
-            const response = await axios.get('http://localhost:8088/product/getByIdShop/' + shopId)
-            if (response.status == 400) {
-                commit('setMessageAlertProductPopup', response.data)
-                commit('setActiveAlertProductPopup', true)
+            const response = await axios.get('http://localhost:8088/product/getByIdShop/' + shop.id)
+            if (response.status == 200) {
+                commit('setProductList', response.data)
             }
-            commit('setProductList', response.data)
+            
         } catch (error) {
             return error.response
         }
     },
 
-    async getProductById({ commit }, productId) {
+    async getProductById({ commit }) {
+        let shop = store.getters["SecurityModule/getShop"]
         try {
-            const response = await axios.get('http://localhost:8088/product/getById/' + productId)
-            if (response.status == 400) {
-                commit('setMessageAlertProductPopup', response.data)
-                commit('setActiveAlertProductPopup', true)
+            const response = await axios.get('http://localhost:8088/product/getById/' + state.idProduct + "/" + shop.id)
+            if (response.status == 200) {
+                commit('setProduct', response.data)
             }
-            commit('setProductEdit', response.data)
         } catch (error) {
             return error.response
         }
     },
 
     async saveProduct() {
+        const idShop = store.getters["SecurityModule/getShop"].id;
         try {
-            const product = state.productEdit
-            const user = state.user
-            const roleName = state.roleName
-            const data = {
-                product: product,
-                user: user,
-                roleName: roleName
-            }
-            return await axios.post('http://localhost:8088/product/save', data);
+            return await axios.post('http://localhost:8088/product/save/' + idShop , state.product);
         } catch (error) {
             return error.response
         }
     },
 
     async updateProduct() {
+        const idShop = store.getters["SecurityModule/getShop"].id;
         try {
-            const product = state.productEdit
-            return await axios.put('http://localhost:8088/product/update', product);
+            return await axios.put('http://localhost:8088/product/update/' + idShop, state.product);
         } catch (error) {
             return error.response
         }
     },
 
     async deleteProduct() {
+        const idShop = store.getters["SecurityModule/getShop"].id;
         try {
-            const product = state.productEdit
-            return await axios.delete('http://localhost:8088/product/delete/' + product.id + '/' + product.idShop)
+            return await axios.delete('http://localhost:8088/product/delete/' + idShop + '/' + state.idProduct)
         } catch (error) {
             return error.response
         }
     },
 
-    async searchProduct({ commit }, keyword) {
+    async searchProduct({ commit }) {
+        const idShop = store.getters["SecurityModule/getShop"].id;
         try {
-            const response = await axios.get('http://localhost:8088/product/searchProductByKeyword?keyword=' + keyword)
-            if (response.status == 400) {
-                commit('setRestartRouterView', !state.getRestartRouterView)
-                commit('setMessageAlertProductPopup', response.data)
-                commit('setActiveAlertProductPopup', true)
-            }
+            const response = await axios.get('http://localhost:8088/product/searchProductByKeyword/' + idShop + '?keyword=' + state.keywordForSearchProduct)
             commit('setProductList', response.data)
         } catch (error) {
             return error.response
@@ -138,16 +97,11 @@ const actions = {
 
 const getters = {
     getProductList: state => state.productList,
-    getActiveFormProductPopup: state => state.activeFormProductPopup,
-    getButtonCreateInFormProductPopup: state => state.buttonCreateInFormProductPopup,
-    getButtonUpdateInFormProductPopup: state => state.buttonUpdateInFormProductPopup,
-    getActiveAlertProductPopup: state => state.activeAlertProductPopup,
-    getMessageAlertProductPopup: state => state.messageAlertProductPopup,
-    getProductEdit: state => state.productEdit,
-    getRestartRouterView: state => state.restartRouterView,
-    getFieldsErrorMap: state => state.fieldsErrorMap,
-    getActiveAlertForFormProductPopup: state => state.activeAlertForFormProductPopup,
-    getMessageAlertForFormProductPopup: state => state.messageAlertForFormProductPopup
+    getActiveFormProduct: state => state.activeFormProduct,
+    getStateBtnSaveFormProduct: state => state.stateBtnSaveFormProduct,
+    getStateBtnUpdateFormProduct: state => state.stateBtnUpdateFormProduct,
+    getProduct: state => state.product,
+    getIdProduct: state => state.idProduct,
 }
 
 export default {

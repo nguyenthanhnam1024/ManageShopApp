@@ -7,7 +7,7 @@
           <label for="name"
             >Name:
             <span class="messageFieldError">{{
-              fieldsErrorMap.name
+              getFieldsErrorMap.name
             }}</span></label
           >
           <input type="text" id="name" v-model="getRequestUpdateUser.name" />
@@ -16,7 +16,7 @@
           <label for="name"
             >Age:
             <span class="messageFieldError">{{
-              fieldsErrorMap.age
+              getFieldsErrorMap.age
             }}</span></label
           >
           <input type="text" id="name" v-model="getRequestUpdateUser.age" />
@@ -25,7 +25,7 @@
           <label for="name"
             >Email:
             <span class="messageFieldError">{{
-              fieldsErrorMap.email
+              getFieldsErrorMap.email
             }}</span></label
           >
           <input type="text" id="name" v-model="getRequestUpdateUser.email" />
@@ -34,7 +34,7 @@
           <label for="name"
             >Phone number:
             <span class="messageFieldError">{{
-              fieldsErrorMap.phoneNumber
+              getFieldsErrorMap.phoneNumber
             }}</span></label
           >
           <input
@@ -47,7 +47,7 @@
           <label for="Address"
             >Address:
             <span class="messageFieldError">{{
-              fieldsErrorMap.address
+              getFieldsErrorMap.address
             }}</span></label
           >
           <input
@@ -109,8 +109,7 @@ export default {
   methods: {
     ...mapMutations("AccountModule", ["setStateOfConfirmUpdateProfile"]),
     ...mapActions("AccountModule", ["updateProfile"]),
-    ...mapMutations("SecurityModule", ["setFieldsErrorMap"]),
-    ...mapMutations("AppVueModule", ["setRestartRouterView"]),
+    ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
 
     confirmUpdate() {
       this.activeConfirmCommon = true;
@@ -155,12 +154,8 @@ export default {
       "getRequestUpdateUser",
       "getStateOfConfirmUpdateProfile",
     ]),
-    ...mapGetters("SecurityModule", ["getUser", "getFieldsErrorMap"]),
-    ...mapGetters("AppVueModule", ["getRestartRouterView"]),
-
-    fieldsErrorMap() {
-      return JSON.parse(JSON.stringify(this.getFieldsErrorMap));
-    },
+    ...mapGetters("SecurityModule", ["getUser"]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
 
     activeFormPopup() {
       return {

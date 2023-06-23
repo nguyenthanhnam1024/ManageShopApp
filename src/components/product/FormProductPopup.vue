@@ -85,7 +85,7 @@
           type="button"
           class="btn btn-success button-save"
           :class="setClassDisplayForSaveSave"
-          @click="buttonSaveProduct"
+          @click="btnSaveFromProduct"
         >
           Save
         </button>
@@ -102,20 +102,17 @@
         </button>
       </form>
     </div>
-    <ConfirmSaveProductPopup
-      :activeConfirmSaveProductPopup="activeConfirmSaveProductPopup"
-      :productName="productName"
-      @haveSaveProduct="haveSaveProduct"
-      @confirmNoSave="confirmNoSave"
+    <ConfirmCommon
+      :activeConfirmCommon="activeConfirmCommon"
+      :messageConfirmCommon="messageConfirmCommon"
+      @confirmYesFromConfirmCommon="confirmYesFromConfirmCommon"
+      @confirmNoFromConfirmCommon="confirmNoFromConfirmCommon"
     />
-    <ConfirnUpdateProductPopup
-      :activeConfirmUpdateProductPopup="activeConfirmUpdateProductPopup"
-      :productName="productName"
-      @confirmNoUpdate="confirmNoUpdate"
-      @haveUpdateProduct="haveUpdateProduct"
+    <AlertCommon
+      :activeAlertCommon="activeAlertCommon"
+      :messageAlertCommon="messageAlertCommon"
+      @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
     />
-    <AlertProductPopup />
-    <AlertErrorForFormProductPopup />
   </div>
 </template>
 
@@ -123,144 +120,130 @@
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import { mapActions } from "vuex";
-import ConfirmSaveProductPopup from "./ConfirmSaveProductPopup.vue";
-import ConfirnUpdateProductPopup from "./ConfirnUpdateProductPopup.vue";
-import AlertProductPopup from "./AlertProductPopup.vue";
-import AlertErrorForFormProductPopup from "./AlertErrorForFormProductPopup.vue";
+import ConfirmCommon from "../common/ConfirmCommon.vue";
+import AlertCommon from "../common/AlertCommon.vue";
 
 export default {
   name: "FormProductPopup",
+
+  components: {
+    ConfirmCommon,
+    AlertCommon,
+  },
+
   data() {
     return {
-      activeConfirmSaveProductPopup: false,
-      activeConfirmUpdateProductPopup: false,
-      productName: "",
+      activeConfirmCommon: false,
+      messageConfirmCommon: null,
+      activeAlertCommon: false,
+      messageAlertCommon: null,
     };
   },
   methods: {
-    ...mapMutations("ProductModule", [
-      "setActiveFormProductPopup",
-      "setActiveAlertProductPopup",
-      "setMessageAlertProductPopup",
-      "setRestartRouterView",
-      "setFieldsErrorMap",
-      "setActiveAlertForFormProductPopup",
-      "setMessageAlertForFormProductPopup",
-    ]),
+    ...mapMutations("ProductModule", ["setActiveFormProduct", "setProduct"]),
     ...mapActions("ProductModule", ["saveProduct", "updateProduct"]),
+    ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
+
+    resetInfo() {
+      this.setProduct({
+        id: null,
+        name: null,
+        idShop: 1,
+        price: null,
+        described: null,
+        dateOfManufacture: null,
+        expiry: null,
+        origin: null,
+      });
+      this.setFieldsErrorMap([]);
+    },
+
+    ClickOkeFromAlertCommon() {
+      this.activeAlertCommon = false;
+      this.activeConfirmCommon = false;
+    },
+
+    async confirmYesFromConfirmCommon() {
+      let response = null;
+      if (this.getStateBtnSaveFormProduct == false) {
+        response = await this.saveProduct();
+      }
+      if (this.getStateBtnUpdateFormProduct == false) {
+        response = await this.updateProduct();
+      }
+      if (response.status == 200) {
+        this.setRestartRouterView(!this.getRestartRouterView);
+        this.resetInfo();
+        this.setActiveFormProduct(false);
+      } else {
+        if (response.status == 400) {
+          this.messageAlertCommon = response.data;
+          this.activeAlertCommon = true;
+        } else {
+          if (response.status == 1000) {
+            this.setFieldsErrorMap(response.data);
+          } else {
+            this.messageAlertCommon = "error " + response.data.status + " :" + response.data.message;
+            this.activeAlertCommon = true;
+          }
+        }
+      }
+    },
+
+    confirmNoFromConfirmCommon() {
+      this.activeConfirmCommon = false;
+    },
+
     comeBack() {
-      this.setActiveFormProductPopup(false);
+      this.setActiveFormProduct(false);
+      this.resetInfo();
     },
-    buttonSaveProduct() {
-      if (
-        this.getProduct.name == "" &&
-        this.getProduct.price == null &&
-        this.getProduct.described == "" &&
-        this.getProduct.dateOfManufacture == "" &&
-        this.getProduct.expiry == "" &&
-        this.getProduct.origin == ""
-      ) {
-        this.setActiveAlertForFormProductPopup(true)
-        this.setMessageAlertForFormProductPopup("write info product prior save !")
-      } else {
-        this.productName = this.getProduct.name;
-        this.activeConfirmSaveProductPopup = true;
-      }
+
+    btnSaveFromProduct() {
+      this.activeConfirmCommon = true;
+      this.messageConfirmCommon = "you sure create product ?";
     },
+
     buttonUpdateProduct() {
-      this.productName = this.getProduct.name;
-      this.activeConfirmUpdateProductPopup = true;
-    },
-    confirmNoSave() {
-      this.activeConfirmSaveProductPopup = false;
-    },
-    async haveSaveProduct() {
-      const response = await this.saveProduct();
-      if (response.status == 200) {
-        this.setRestartRouterView(!this.getRestartRouterView);
-        this.setMessageAlertProductPopup("Save success !");
-        this.setActiveAlertProductPopup(true);
-      } else {
-        if (response.status == 400) {
-          this.setMessageAlertForFormProductPopup(response.data);
-          this.setActiveAlertForFormProductPopup(true);
-        } else {
-          if (response.status == 1000) {
-            this.setFieldsErrorMap(response.data);
-          } else {
-            this.setMessageAlertForFormProductPopup("error "+response.data.status +" :"+response.data.message);
-            this.setActiveAlertForFormProductPopup(true);
-          }
-        }
-      }
-      this.activeConfirmSaveProductPopup = false;
-    },
-    confirmNoUpdate() {
-      this.activeConfirmUpdateProductPopup = false;
-    },
-    async haveUpdateProduct() {
-      const response = await this.updateProduct();
-      if (response.status == 200) {
-        this.setRestartRouterView(!this.getRestartRouterView);
-        this.setMessageAlertProductPopup("Update success !");
-        this.setActiveAlertProductPopup(true);
-      } else {
-        if (response.status == 400) {
-          this.setMessageAlertForFormProductPopup(response.data);
-          this.setActiveAlertForFormProductPopup(true);
-        } else {
-          if (response.status == 1000) {
-            this.setFieldsErrorMap(response.data);
-          } else {
-            this.setMessageAlertForFormProductPopup("error :"+response.data.status +" :"+response.data.message);
-            this.setActiveAlertForFormProductPopup(true);
-          }
-        }
-      }
-      this.activeConfirmUpdateProductPopup = false;
+      this.activeConfirmCommon = true;
+      this.messageConfirmCommon = "you sure update product ?";
     },
   },
   computed: {
     ...mapGetters("ProductModule", [
-      "getActiveFormProductPopup",
-      "getButtonCreateInFormProductPopup",
-      "getButtonUpdateInFormProductPopup",
-      "getProductEdit",
-      "getRestartRouterView",
-      "getFieldsErrorMap",
+      "getActiveFormProduct",
+      "getStateBtnSaveFormProduct",
+      "getStateBtnUpdateFormProduct",
+      "getProduct",
     ]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
+
     activeFormProductPopup() {
       return {
-        "open-popup": this.getActiveFormProductPopup,
+        "open-popup": this.getActiveFormProduct,
       };
     },
     setClassDisplayForSaveSave() {
       return {
-        "display-none": this.getButtonCreateInFormProductPopup,
+        "display-none": this.getStateBtnSaveFormProduct,
       };
     },
     setClassDisplayForButtonUpdate() {
       return {
-        "display-none": this.getButtonUpdateInFormProductPopup,
+        "display-none": this.getStateBtnUpdateFormProduct,
       };
-    },
-    getProduct() {
-      return this.getProductEdit;
     },
     fieldsErrorMap() {
       return this.getFieldsErrorMap;
     },
   },
-  components: {
-    ConfirmSaveProductPopup,
-    ConfirnUpdateProductPopup,
-    AlertProductPopup,
-    AlertErrorForFormProductPopup,
-  },
 };
 </script>
 
 <style scoped>
+.messageFieldError {
+  font-size: 13px;
+}
 div div form div input {
   font-size: 12px;
   height: 22px;
@@ -294,7 +277,7 @@ div div form div label {
 }
 .box {
   width: 350px;
-  height: 490px;
+  height: 510px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1.4);
@@ -314,7 +297,7 @@ div form {
   right: 0;
   bottom: 0;
   visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.16);
 }
 .wrapper-popup.open-popup {
   opacity: 1;

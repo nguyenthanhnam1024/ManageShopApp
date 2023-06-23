@@ -26,7 +26,6 @@ const state = {
         password: null,
     },
     requestRegister: null,
-    fieldsErrorMap: [],
     accessToken: null,
 }
 const mutations = {
@@ -34,7 +33,6 @@ const mutations = {
     setUser(state, user) { state.user = user },
     setShop(state, shop) { state.shop = shop},
     setRequestRegister(state, request) { state.requestRegister = request },
-    setFieldsErrorMap(state, errorMap) { state.fieldsErrorMap = errorMap },
     setAccessToken(state, jwt) { state.accessToken = jwt},
 }
 const actions = {
@@ -76,7 +74,6 @@ const actions = {
 const getters = {
     getUser: state => state.user,
     getShop: state => state.shop,
-    getFieldsErrorMap: state => state.fieldsErrorMap,
     getAccessToken: state => state.accessToken,
 }
 export default {

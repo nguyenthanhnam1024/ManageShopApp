@@ -203,12 +203,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations("AppVueModule", ["setRestartRouterView"]),
+    ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
     ...mapMutations("UserModule", ["setActiveOfPopup", "setRequestUser"]),
     ...mapActions("UserModule", ["saveUserFromAdmin", "updateUserFromADMIN"]),
     ...mapActions("ShopModule", ["fetchShopList"]),
     ...mapActions("RoleModule", ["fetchRoleNames"]),
-    ...mapMutations("SecurityModule", ["setFieldsErrorMap"]),
 
     confirmNoFromConfirmCommon() {
       this.activeConfirmCommon = false;
@@ -284,8 +283,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("AppVueModule", ["getRestartRouterView"]),
-    ...mapGetters("SecurityModule", ["getFieldsErrorMap"]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
     ...mapGetters("UserModule", [
       "getActiveOfPopup",
       "getInactiveBtnSaveOfPopup",

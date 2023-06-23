@@ -7,7 +7,7 @@
           <label for="name"
             >Name Shop:
             <span class="messageFieldError">{{
-              fieldsErrorMap["shop.name"]
+              fieldsErrorMap.name
             }}</span></label
           >
           <input
@@ -21,7 +21,7 @@
           <label for="Address"
             >Address:
             <span class="messageFieldError">{{
-              fieldsErrorMap["shop.address"]
+              fieldsErrorMap.address
             }}</span></label
           >
           <input type="text" id="Address" v-model="getShop.address" />
@@ -30,7 +30,7 @@
           <label for="hotline"
             >Hotline:
             <span class="messageFieldError">{{
-              fieldsErrorMap["shop.hotline"]
+              fieldsErrorMap.hotline
             }}</span></label
           >
           <input type="text" id="hotline" v-model="getShop.hotline" />
@@ -97,8 +97,7 @@ export default {
   methods: {
     ...mapMutations("ShopModule", ["setActiveOfPopup", "setShop"]),
     ...mapActions("ShopModule", ["saveShop", "updateShop"]),
-    ...mapMutations("SecurityModule", ["setFieldsErrorMap"]),
-    ...mapMutations("AppVueModule", ["setRestartRouterView"]),
+    ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
 
     confirmUpdate() {
       this.activeConfirmCommon = true;
@@ -134,6 +133,7 @@ export default {
         this.resetForm();
       } else {
         if (response.status == 1000) {
+          console.log(response.data)
           this.setFieldsErrorMap(response.data);
         } else {
           this.activeAlertCommon = true;
@@ -164,8 +164,8 @@ export default {
       "getStateBtnUpdateOfForm",
       "getShop",
     ]),
-    ...mapGetters("SecurityModule", ["getUser", "getFieldsErrorMap"]),
-    ...mapGetters("AppVueModule", ["getRestartRouterView"]),
+    ...mapGetters("SecurityModule", ["getUser"]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
 
     fieldsErrorMap() {
       return JSON.parse(JSON.stringify(this.getFieldsErrorMap));

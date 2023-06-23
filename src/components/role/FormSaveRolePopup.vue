@@ -71,8 +71,7 @@
     methods: {
       ...mapMutations("RoleModule", ["setActiveOfPopup", "setRole"]),
       ...mapActions("RoleModule", ["saveRole"]),
-      ...mapMutations("SecurityModule", ["setFieldsErrorMap"]),
-      ...mapMutations("AppVueModule", ["setRestartRouterView"]),
+      ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
 
       ClickOkeFromAlertCommon() {
         this.activeAlertCommon = false
@@ -121,8 +120,8 @@
   
     computed: {
       ...mapGetters("RoleModule", ["getActiveOfPopup", "getRole"]),
-      ...mapGetters("SecurityModule", ["getUser", "getFieldsErrorMap"]),
-      ...mapGetters("AppVueModule", ["getRestartRouterView"]),
+      ...mapGetters("SecurityModule", ["getUser"]),
+      ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
   
       fieldsErrorMap() {
         return JSON.parse(JSON.stringify(this.getFieldsErrorMap));

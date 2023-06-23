@@ -102,7 +102,7 @@ export default {
       "setRequestAccount",
     ]),
     ...mapActions("AccountModule", ["updatePassword"]),
-    ...mapMutations("SecurityModule", ["setFieldsErrorMap"]),
+    ...mapMutations("AppVueModule", ["setFieldsErrorMap"]),
 
     toggleShowPassword() {
       this.showPassword = !this.showPassword;
@@ -178,8 +178,9 @@ export default {
       "getRequestUpdateUser",
       "getRequestAccount",
     ]),
-    ...mapGetters("SecurityModule", ["getUser", "getFieldsErrorMap"]),
-
+    ...mapGetters("SecurityModule", ["getUser"]),
+    ...mapGetters("AppVueModule", ["getFieldsErrorMap"]),
+    
     getActiveBlockUpdatePassword() {
       return {
         "dislay-none": this.getInActiveBlockUpdatePassword,

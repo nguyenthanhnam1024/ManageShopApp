@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper-popup" :class="saveConfirmtPopup">
     <div class="save-product-popup">
-      <h3>You register success. Click oke to login !</h3>
+      <h3></h3>
       <div class="buttons-control">
         <button class="btn button-yes" @click="oke">oke</button>
         <button class="btn button-no" @click="cancel">cancel</button>

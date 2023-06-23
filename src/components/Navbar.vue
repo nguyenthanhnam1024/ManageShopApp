@@ -1,15 +1,5 @@
 <template>
   <div>
-    <Alert
-      :activeAlertVue="activeAlertVue"
-      :messageAlertVue="messageAlertVue"
-      @alertOke="alertOke"
-    />
-    <Confirm
-      :activeConfirm="activeConfirm"
-      @confirmYes="confirmYes"
-      @confirmNo="confirmNo"
-    />
     <div class="header">
       <div class="header-left">
         <h1>{{ getShop.name }}</h1>
@@ -144,21 +134,33 @@
         </ul>
       </div>
     </nav>
+    <ConfirmCommon
+      :activeConfirmCommon="activeConfirmCommon"
+      :messageConfirmCommon="messageConfirmCommon"
+      @confirmYesFromConfirmCommon="confirmYesFromConfirmCommon"
+      @confirmNoFromConfirmCommon="confirmNoFromConfirmCommon"
+    />
+    <AlertCommon
+      :activeAlertCommon="activeAlertCommon"
+      :messageAlertCommon="messageAlertCommon"
+      @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
-import Alert from "./Alert.vue";
-import Confirm from "./Confirm.vue";
+
+import ConfirmCommon from "./common/ConfirmCommon.vue";
+import AlertCommon from "./common/AlertCommon.vue";
 
 export default {
   name: "NavbarMain",
 
   components: {
-    Alert,
-    Confirm,
+    ConfirmCommon,
+    AlertCommon,
   },
 
   data() {
@@ -173,9 +175,10 @@ export default {
       activeHoverBtnRevenueProfit: false,
       activeHoverBtnRole: false,
       activeHoverBtnAccount: false,
-      activeAlertVue: false,
-      messageAlertVue: "",
-      activeConfirm: false,
+      activeConfirmCommon: false,
+      messageConfirmCommon: null,
+      activeAlertCommon: false,
+      messageAlertCommon: null,
     };
   },
 
@@ -183,10 +186,11 @@ export default {
     ...mapActions("SecurityModule", ["logout"]),
 
     clickLogout() {
-      this.activeConfirm = true;
+      this.activeConfirmCommon = true;
+      this.messageConfirmCommon = "you sure logout ?";
     },
 
-    async confirmYes() {
+    async confirmYesFromConfirmCommon() {
       const response = await this.logout();
       if (response.status == 200) {
         localStorage.removeItem("accessToken");
@@ -194,18 +198,18 @@ export default {
         localStorage.removeItem("shop");
         this.$router.push({ path: "/" });
       } else {
-        this.activeAlertVue = true;
-        this.messageAlertVue = response.data;
+        this.activeAlertCommon = true;
+        this.messageAlertCommon = response.data;
       }
-      this.activeConfirm = false;
+      this.activeConfirmCommon = false;
     },
 
-    alertOke() {
-      this.activeAlertVue = false;
+    ClickOkeFromAlertCommon() {
+      this.activeAlertCommon = false;
     },
 
-    confirmNo() {
-      this.activeConfirm = false;
+    confirmNoFromConfirmCommon() {
+      this.activeConfirmCommon = false;
     },
 
     BtnProduct() {

@@ -1,16 +1,6 @@
 !<template>
   <div class="container">
     <div class="wrapper">
-      <AlertSecurityPopup
-        :activeAlertSecurityPopup="activeAlertSecurityPopup"
-        :messageAlertSecurityPopup="messageAlertSecurityPopup"
-        @alertOke="alertOke"
-      />
-      <ConfirmPopupOfRegisterSecurity
-        :activeConfirmPopupOfSecurity="activeConfirmPopupOfSecurity"
-        @oke="oke"
-        @cancel="cancel"
-      />
       <div class="row">
         <div class="col-md-6 account">
           <h2>Register account</h2>
@@ -68,11 +58,11 @@
               >
               <select id="select-option" v-model="request.idShop">
                 <option
-                  v-for="shop in shopList"
+                  v-for="shop in getShopList"
                   :key="shop.id"
                   :value="shop.id"
                 >
-                  {{ shop.name }}
+                  {{ shop.name }} ({{ shop.address }})
                 </option>
               </select>
             </div>
@@ -168,6 +158,17 @@
         </div>
       </div>
     </div>
+    <ConfirmCommon
+      :activeConfirmCommon="activeConfirmCommon"
+      :messageConfirmCommon="messageConfirmCommon"
+      @confirmNoFromConfirmCommon="confirmNoFromConfirmCommon"
+      @confirmYesFromConfirmCommon="confirmYesFromConfirmCommon"
+    />
+    <AlertCommon 
+      :activeAlertCommon="activeAlertCommon"
+      :messageAlertCommon="messageAlertCommon"
+      @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
+    />
   </div>
 </template>
 
@@ -175,12 +176,18 @@
 import { mapActions } from "vuex";
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
-import AlertSecurityPopup from "./AlertSecurityPopup.vue";
-import ConfirmPopupOfRegisterSecurity from "./ConfirmPopupOfRegisterSecurity.vue";
 import Common from "../common/Common";
+import AlertCommon from "../common/AlertCommon.vue";
+import ConfirmCommon from "../common/ConfirmCommon.vue";
 
 export default {
   name: "Register-vue",
+
+  components: {
+    AlertCommon,
+    ConfirmCommon,
+  },
+
   data() {
     return {
       request: {
@@ -193,43 +200,37 @@ export default {
         phoneNumber: "",
         address: "",
       },
-      shopList: [],
-      activeAlertSecurityPopup: false,
-      messageAlertSecurityPopup: "",
-      activeConfirmPopupOfSecurity: false,
       showPassword: false,
+      activeConfirmCommon: false,
+      messageConfirmCommon: null,
+      activeAlertCommon: false,
+      messageAlertCommon: null,
     };
   },
 
   methods: {
     ...mapActions("SecurityModule", ["registerUser"]),
     ...mapActions("ShopModule", ["fetchShopList"]),
-    ...mapMutations("SecurityModule", [
-      "setRequestRegister",
-      "setFieldsErrorMap",
-    ]),
-    ...mapMutations("AppVueModule", ["setInactiveNavbar"]),
-    
-    async getShops() {
-      this.fetchShopList();
-      this.shopList = this.getShopList;
-    },
+    ...mapMutations("SecurityModule", ["setRequestRegister"]),
+    ...mapMutations("AppVueModule", ["setInactiveNavbar", "setFieldsErrorMap"]),
+
     async register() {
       this.setRequestRegister(JSON.parse(JSON.stringify(this.request)));
       const response = await this.registerUser();
       if (response.status == 200) {
-        this.activeConfirmPopupOfSecurity = true;
+        this.activeConfirmCommon = true;
+        this.messageConfirmCommon = "You register success. Click oke to login !";
       } else {
         if (response.status == 1000) {
           this.setFieldsErrorMap(response.data);
         } else {
-          this.activeAlertSecurityPopup = true;
-          this.messageAlertSecurityPopup = response.data;
+          this.activeAlertCommon = true;
+          this.messageAlertCommon = response.data;
         }
       }
     },
-    oke() {
-      this.activeConfirmPopupOfSecurity = false;
+    confirmYesFromConfirmCommon() {
+      this.activeConfirmCommon = false;
       this.$router.push({ path: "/" });
       this.request = {
         userName: "",
@@ -243,15 +244,15 @@ export default {
       };
       this.setFieldsErrorMap([]);
     },
-    cancel() {
-      this.activeConfirmPopupOfSecurity = false;
+    confirmNoFromConfirmCommon() {
+      this.activeConfirmCommon = false;
     },
     setIdShop(idShopNew) {
       this.user.idShop = idShopNew;
       return this.user.idShop;
     },
-    alertOke() {
-      this.activeAlertSecurityPopup = false;
+    ClickOkeFromAlertCommon() {
+      this.activeAlertCommon = false;
     },
     getURL() {
       const currentURL = window.location.href;
@@ -273,23 +274,19 @@ export default {
   },
 
   created() {
-    this.getShops();
+    this.fetchShopList();
     this.setMapError();
     const common = new Common();
     common.redirectByJwtAndUrl();
   },
 
   computed: {
-    ...mapGetters("SecurityModule", ["getFieldsErrorMap"]),
+    ...mapGetters("AppVueModule", ["getFieldsErrorMap"]),
     ...mapGetters("ShopModule", ["getShopList"]),
 
     fieldsErrorMap() {
       return JSON.parse(JSON.stringify(this.getFieldsErrorMap));
     },
-  },
-  components: {
-    AlertSecurityPopup,
-    ConfirmPopupOfRegisterSecurity,
   },
 };
 </script>

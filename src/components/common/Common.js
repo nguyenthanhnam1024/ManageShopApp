@@ -24,12 +24,13 @@ export default class Common {
         }
         const jwt = store.getters['SecurityModule/getAccessToken']
         if (jwt == null || jwt == "") {
-            if (currentURL != "http://localhost:8080/register" && currentURL != "http://localhost:8080/") {
+            if (currentURL != "http://localhost:8080/register" && currentURL != "http://localhost:8080") {
                 router.push({ path: "/" })
             }
-        }
-        if (currentURL == "http://localhost:8080/shop") {
-            store.commit('SecurityModule/setShop', JSON.parse(localStorage.getItem('shop')))
-        }
+        } else {
+            if (currentURL == "http://localhost:8080/shop") {
+                store.commit('SecurityModule/setShop', JSON.parse(localStorage.getItem('user')).shop)
+            }
+        }     
     }
 }

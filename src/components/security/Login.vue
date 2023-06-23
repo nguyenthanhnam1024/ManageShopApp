@@ -1,10 +1,5 @@
 !<template>
   <div>
-    <AlertSecurityPopup
-      :activeAlertSecurityPopup="activeAlertSecurityPopup"
-      :messageAlertSecurityPopup="messageAlertSecurityPopup"
-      @alertOke="alertOke"
-    />
     <div class="form">
       <form>
         <h1>Login</h1>
@@ -39,6 +34,11 @@
         </div>
       </form>
     </div>
+    <AlertCommon 
+      :activeAlertCommon="activeAlertCommon"
+      :messageAlertCommon="messageAlertCommon"
+      @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
+    />
   </div>
 </template>
 
@@ -46,17 +46,22 @@
 import { mapActions } from "vuex";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-import AlertSecurityPopup from "./AlertSecurityPopup.vue";
 import Common from "../common/Common";
+import AlertCommon from "../common/AlertCommon.vue";
 
 export default {
   name: "Login-vue",
+
+  components: {
+    AlertCommon,
+  },
+
   data() {
     return {
       messageError: null,
-      activeAlertSecurityPopup: false,
-      messageAlertSecurityPopup: null,
       showPassword: false,
+      activeAlertCommon: false,
+      messageAlertCommon: null,
     };
   },
   methods: {
@@ -79,13 +84,13 @@ export default {
         if (response.status == 1000) {
           this.messageError = response.data;
         } else {
-          this.activeAlertSecurityPopup = true;
-          this.messageAlertSecurityPopup = response.data;
+          this.activeAlertCommon = true;
+          this.messageAlertCommon = response.data;
         }
       }
     },
-    alertOke() {
-      this.activeAlertSecurityPopup = false;
+    ClickOkeFromAlertCommon() {
+      this.activeAlertCommon = false;
     },
     getURL() {
       const currentURL = window.location.href;
@@ -108,9 +113,6 @@ export default {
   },
   computed: {
     ...mapState("SecurityModule", ["accountLogin"]),
-  },
-  components: {
-    AlertSecurityPopup,
   },
 };
 </script>
