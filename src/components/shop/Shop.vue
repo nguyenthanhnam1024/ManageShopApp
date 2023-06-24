@@ -122,12 +122,13 @@ export default {
       "setStateBtnUpdateOfForm",
       "setIdShopAsDelete",
     ]),
-    ...mapMutations("SecurityModule", ["setShop"]),
+    ...mapMutations("SecurityModule", ["setShop", "setShopAsADMINClick"]),
 
     clickInShop(shop) {
       localStorage.setItem("shop", JSON.stringify(shop));
       this.setShop(shop);
       this.$router.push("/product");
+      this.setShopAsADMINClick(shop);
     },
 
     async confirmYesFromConfirmCommon() {

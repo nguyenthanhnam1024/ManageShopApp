@@ -110,6 +110,7 @@ export default {
     ...mapMutations("AccountModule", ["setStateOfConfirmUpdateProfile"]),
     ...mapActions("AccountModule", ["updateProfile"]),
     ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
+    ...mapMutations("SecurityModule", ["setUser"]),
 
     confirmUpdate() {
       this.activeConfirmCommon = true;
@@ -125,6 +126,8 @@ export default {
       console.log(response);
       this.activeConfirmCommon = false;
       if (response.status == 200) {
+        localStorage.setItem('user', JSON.stringify(response.data));
+        this.setUser(response.data);
         this.setStateOfConfirmUpdateProfile(false);
         this.setRestartRouterView(!this.getRestartRouterView);
         this.setFieldsErrorMap([]);

@@ -28,6 +28,12 @@ const state = {
     },
     requestRegister: null,
     accessToken: null,
+    shopAsADMINClick: {
+        id: null,
+        name: null,
+        address: null,
+        hotline: null,
+    },
 }
 const mutations = {
     setAcconutLogin(state, account) { state.accountLogin = account },
@@ -35,6 +41,7 @@ const mutations = {
     setShop(state, shop) { state.shop = shop},
     setRequestRegister(state, request) { state.requestRegister = request },
     setAccessToken(state, jwt) { state.accessToken = jwt},
+    setShopAsADMINClick(state, value) { state.shopAsADMINClick = value },
 }
 const actions = {
     async logout() {
@@ -76,6 +83,7 @@ const getters = {
     getUser: state => state.user,
     getShop: state => state.shop,
     getAccessToken: state => state.accessToken,
+    getShopAsADMINClick: state => state.shopAsADMINClick,
 }
 export default {
     namespaced: true,

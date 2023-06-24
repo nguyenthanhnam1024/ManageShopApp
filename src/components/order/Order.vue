@@ -45,7 +45,7 @@
                 <button
                   type="button"
                   class="btn btn-warning"
-                  @click="buttonUpdateOrder(order.id)"
+                  @click="buttonUpdateOrder(order)"
                 >
                   edit
                 </button>
@@ -176,12 +176,17 @@ export default {
       this.setStateBtnUpdateFormOrder(true);
     },
 
-    async buttonUpdateOrder(idOrder) {
-      this.setIdOrder(idOrder);
-      await this.getOrderById();
-      this.setActiveFormOrder(true);
-      this.setStateBtnSaveFormOrder(true);
-      this.setStateBtnUpdateFormOrder(false);
+    async buttonUpdateOrder(order) {
+      if (order.seller.id != this.getUser.id && this.getUser.role == "STAFF") {
+        this.activeAlertCommon = true;
+        this.messageAlertCommon = "you only update your order";
+      } else {
+        this.setIdOrder(order.id);
+        await this.getOrderById();
+        this.setActiveFormOrder(true);
+        this.setStateBtnSaveFormOrder(true);
+        this.setStateBtnUpdateFormOrder(false);
+      }
     },
 
     deleteOrderButton(orderId) {

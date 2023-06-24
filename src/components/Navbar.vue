@@ -214,10 +214,47 @@ export default {
       this.activeHoverBtnRole = false;
       this.activeHoverBtnAccount = true;
     },
+    resetHover() {
+      if(this.getCurrentURL == "http://localhost:8080/shop") {
+        this.BtnShop();
+        return;
+      }
+      if(this.getCurrentURL == "http://localhost:8080/user") {
+        this.BtnUser();
+        return;
+      }
+      if(this.getCurrentURL == "http://localhost:8080/role") {
+        this.BtnRole();
+        return;
+      }
+      if(this.getCurrentURL == "http://localhost:8080/account") {
+        this.BtnAccount();
+        return;
+      }
+      if(this.getCurrentURL == "http://localhost:8080/product") {
+        this.BtnProduct();
+        return;
+      }
+      if(this.getCurrentURL == "http://localhost:8080/order") {
+        this.BtnOrder();
+        return;
+      }
+    },
+  },
+
+  watch: {
+    getCurrentURL: {
+      handler() {
+        this.resetHover();
+      },
+      immediate: true,
+      deep: true,
+    },
   },
 
   computed: {
     ...mapGetters("SecurityModule", ["getUser", "getShop"]),
+    ...mapGetters("AppVueModule", ["getCurrentURL"]),
 
     setActiveBtnNavbarByRoleADMIN() {
       if (this.getUser.role == "ADMIN" && this.getShop.id == 0) {

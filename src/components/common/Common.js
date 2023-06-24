@@ -5,6 +5,7 @@ export default class Common {
 
     redirectByJwtAndUrl() {
         const currentURL = window.location.href;
+        store.commit('AppVueModule/setCurrentURL', currentURL);
         if (
             currentURL == "http://localhost:8080/register" ||
             currentURL == "http://localhost:8080/"
@@ -30,6 +31,9 @@ export default class Common {
         } else {
             if (currentURL == "http://localhost:8080/shop") {
                 store.commit('SecurityModule/setShop', JSON.parse(localStorage.getItem('user')).shop)
+            }
+            if (currentURL == "http://localhost:8080/product") {
+                store.commit('SecurityModule/setShop', store.getters['SecurityModule/getShopAsADMINClick'])
             }
         }     
     }
