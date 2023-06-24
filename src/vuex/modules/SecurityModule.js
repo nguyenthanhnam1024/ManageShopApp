@@ -2,6 +2,7 @@ import axios from "axios"
 
 const state = {
     user: {
+        id: null,
         shop: {
             id: null,
             name: null,

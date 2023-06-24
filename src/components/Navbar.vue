@@ -52,53 +52,11 @@
           </li>
           <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
             <router-link
-              to="/receipt"
-              class="nav-link"
-              :class="{ afterClickBtn: activeHoverBtnReceipt }"
-              @click="BtnReceipt"
-              >Receipt</router-link
-            >
-          </li>
-          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
-            <router-link
-              to="/deliveryBill"
-              class="nav-link"
-              :class="{ afterClickBtn: activeHoverBtnDeliveryBill }"
-              @click="BtnDeliveryBill"
-              >Delivery bill</router-link
-            >
-          </li>
-          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
-            <router-link
               to="/order"
               class="nav-link"
               :class="{ afterClickBtn: activeHoverBtnOrder }"
               @click="BtnOrder"
               >Order</router-link
-            >
-          </li>
-          <li class="nav-item" :class="setActiveBtnNavbarByRoleADMIN">
-            <router-link
-              to="/statisticalProduct"
-              class="nav-link"
-              :class="{ afterClickBtn: activeHoverBtnStatisticalProduct }"
-              @click="BtnStatisticalProduct"
-              >Statistical product</router-link
-            >
-          </li>
-          <li
-            class="nav-item"
-            :class="[
-              setActiveBtnNavbarByRoleADMIN,
-              setActiveBtnNavbarByRoleSTAFF,
-            ]"
-          >
-            <router-link
-              to="/revenueProfit"
-              class="nav-link"
-              :class="{ afterClickBtn: activeHoverBtnRevenueProfit }"
-              @click="BtnRevenueProfit"
-              >Revenue profit</router-link
             >
           </li>
           <li
@@ -167,12 +125,8 @@ export default {
     return {
       activeHoverBtnShop: false,
       activeHoverBtnProduct: false,
-      activeHoverBtnReceipt: false,
-      activeHoverBtnDeliveryBill: false,
       activeHoverBtnOrder: false,
       activeHoverBtnUser: false,
-      activeHoverBtnStatisticalProduct: false,
-      activeHoverBtnRevenueProfit: false,
       activeHoverBtnRole: false,
       activeHoverBtnAccount: false,
       activeConfirmCommon: false,
@@ -215,120 +169,48 @@ export default {
     BtnProduct() {
       this.activeHoverBtnShop = false;
       this.activeHoverBtnProduct = true;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
       this.activeHoverBtnOrder = false;
       this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
       this.activeHoverBtnRole = false;
       this.activeHoverBtnAccount = false;
     },
     BtnShop() {
       this.activeHoverBtnShop = true;
       this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
       this.activeHoverBtnOrder = false;
       this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
-      this.activeHoverBtnRole = false;
-      this.activeHoverBtnAccount = false;
-    },
-    BtnReceipt() {
-      this.activeHoverBtnShop = false;
-      this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = true;
-      this.activeHoverBtnDeliveryBill = false;
-      this.activeHoverBtnOrder = false;
-      this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
-      this.activeHoverBtnRole = false;
-      this.activeHoverBtnAccount = false;
-    },
-    BtnDeliveryBill() {
-      this.activeHoverBtnShop = false;
-      this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = true;
-      this.activeHoverBtnOrder = false;
-      this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
       this.activeHoverBtnRole = false;
       this.activeHoverBtnAccount = false;
     },
     BtnOrder() {
       this.activeHoverBtnShop = false;
       this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
       this.activeHoverBtnOrder = true;
       this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
       this.activeHoverBtnRole = false;
       this.activeHoverBtnAccount = false;
     },
     BtnUser() {
       this.activeHoverBtnShop = false;
       this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
       this.activeHoverBtnOrder = false;
       this.activeHoverBtnUser = true;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
-      this.activeHoverBtnRole = false;
-      this.activeHoverBtnAccount = false;
-    },
-    BtnStatisticalProduct() {
-      this.activeHoverBtnShop = false;
-      this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
-      this.activeHoverBtnOrder = false;
-      this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = true;
-      this.activeHoverBtnRevenueProfit = false;
-      this.activeHoverBtnRole = false;
-      this.activeHoverBtnAccount = false;
-    },
-    BtnRevenueProfit() {
-      this.activeHoverBtnShop = false;
-      this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
-      this.activeHoverBtnOrder = false;
-      this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = true;
       this.activeHoverBtnRole = false;
       this.activeHoverBtnAccount = false;
     },
     BtnRole() {
       this.activeHoverBtnShop = false;
       this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
       this.activeHoverBtnOrder = false;
       this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
       this.activeHoverBtnRole = true;
       this.activeHoverBtnAccount = false;
     },
     BtnAccount() {
       this.activeHoverBtnShop = false;
       this.activeHoverBtnProduct = false;
-      this.activeHoverBtnReceipt = false;
-      this.activeHoverBtnDeliveryBill = false;
       this.activeHoverBtnOrder = false;
       this.activeHoverBtnUser = false;
-      this.activeHoverBtnStatisticalProduct = false;
-      this.activeHoverBtnRevenueProfit = false;
       this.activeHoverBtnRole = false;
       this.activeHoverBtnAccount = true;
     },
@@ -349,7 +231,7 @@ export default {
     },
 
     setActiveBtnNavbarByRoleADMINInShop() {
-      if (this.getShop.id != 0 ) {
+      if (this.getShop.id != 0) {
         return {
           displayNoneForBtn: true,
         };

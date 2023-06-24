@@ -32,7 +32,7 @@
       <br />
       <div class="div-create-object">
         <button type="button" class="btn-create" @click="buttonCreateRole">
-          Create shop
+          Create role
         </button>
       </div>
     </div>
