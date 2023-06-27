@@ -32,7 +32,7 @@ const mutations = {
 
 const actions = {
     async fetchProductList({ commit }) {
-        let shop = store.getters["SecurityModule/getShop"]
+        let shop = store.getters['SecurityModule/getShop']
         try {
             const response = await axios.get('http://localhost:8088/product/getByIdShop/' + shop.id)
             if (response.status == 200) {

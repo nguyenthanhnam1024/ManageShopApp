@@ -52,7 +52,7 @@
           <form>
             <div>
               <p>
-                <label for="select-option"
+                <label for="select-shop-option"
                   >Select shop:<span class="messageError">
                     {{ getFieldsErrorMap.idShop }}</span
                   ><span class="messageError">
@@ -61,7 +61,7 @@
                 >
               </p>
               <select
-                id="select-option"
+                id="select-shop-option"
                 class="select"
                 v-model="getRequestUser.idShop"
               >
@@ -77,14 +77,15 @@
             </div>
             <div>
               <p>
-                <label for="select-option"
+                <label for="select-role-option"
                   >Select role:<span class="messageError">
                     {{ getFieldsErrorMap.roleName }}</span
                   ></label
                 >
               </p>
               <select
-                id="select-option"
+                id="select-role-option"
+                
                 class="select"
                 v-model="getRequestUser.roleName"
               >

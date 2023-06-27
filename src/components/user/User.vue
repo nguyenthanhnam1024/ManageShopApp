@@ -6,13 +6,13 @@
       <div class="wrapper-search">
         <div class="div-select-role" :class="setStateForBlockSelectRole">
           <select
-            id="select-option"
+            id="select-role-option"
             class="form-control select-role"
             v-model="getDataRequestAsSearch.roleName"
-            @input="keywordNull"
+            @input="roleNull"
           >
-            <option disabled selected value="">Select role ...</option>
-            <option value="">( none )</option>
+            <option disabled selected value="">Select role (none)...</option>
+            <option value="">(none)</option>
             <option
               v-for="(roleName, index) in getRoleNames"
               :key="index"
@@ -26,8 +26,8 @@
           class="form-control mr-sm-2"
           type="text"
           v-model="getDataRequestAsSearch.keyword"
-          placeholder="keyword..."
-          @input="keywordNull"
+          placeholder="name..."
+          @keyup="keywordNull"
         />
         <button
           class="btn btn-outline-success my-2 my-sm-0"
@@ -187,16 +187,19 @@ export default {
     keywordNull() {
       if (
         this.getDataRequestAsSearch.keyword == null ||
-        this.getDataRequestAsSearch.keyword == "" ||
-        this.getDataRequestAsSearch.roleName == null ||
-        this.getDataRequestAsSearch.roleName == ""
+        this.getDataRequestAsSearch.keyword == ""
       ) {
         this.setRestartRouterView(!this.getRestartRouterView);
       }
     },
 
-    async searchByKeywordo() {
-      await this.searchByKeyword();
+    roleNull() {
+      if (
+        this.getDataRequestAsSearch.roleName == null ||
+        this.getDataRequestAsSearch.roleName == ""
+      ) {
+        this.setRestartRouterView(!this.getRestartRouterView);
+      }
     },
   },
 
@@ -208,10 +211,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("UserModule", [
-      "getListUser",
-      "getDataRequestAsSearch",
-    ]),
+    ...mapGetters("UserModule", ["getListUser", "getDataRequestAsSearch"]),
     ...mapGetters("RoleModule", ["getRoleNames"]),
     ...mapGetters("AppVueModule", ["getRestartRouterView"]),
     ...mapGetters("SecurityModule", ["getUser", "getShop"]),

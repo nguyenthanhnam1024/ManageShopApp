@@ -188,6 +188,7 @@ export default {
           }
         }
       }
+      this.activeConfirmCommon = false;
     },
 
     confirmNoFromConfirmCommon() {

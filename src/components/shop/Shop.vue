@@ -8,7 +8,7 @@
           class="form-control mr-sm-2"
           type="text"
           v-model="keyword"
-          placeholder="keyword..."
+          placeholder="name..."
           @keyup="keywordNull"
         />
         <button

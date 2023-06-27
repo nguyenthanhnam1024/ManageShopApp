@@ -90,7 +90,6 @@ const actions = {
             idProduct: state.order.product.id,
             quantity: state.order.quantity,
         }
-        console.log(data)
         try {
             return await axios.put("http://localhost:8088/order/update/" + shop.id, data)
         } catch (error) {

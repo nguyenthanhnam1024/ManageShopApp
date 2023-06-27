@@ -123,7 +123,6 @@ export default {
 
     async confirmYesFromConfirmCommon() {
       const response = await this.updateProfile();
-      console.log(response);
       this.activeConfirmCommon = false;
       if (response.status == 200) {
         localStorage.setItem('user', JSON.stringify(response.data));

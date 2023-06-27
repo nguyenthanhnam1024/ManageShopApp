@@ -6,11 +6,11 @@ const state = {
     user: {
         id: null,
         idShop: null,
-        idAccount:null,
+        idAccount: null,
         name: null,
         age: null,
         phoneNumber: null,
-        email:null,
+        email: null,
         address: null,
     },
     requestUser: {
@@ -25,8 +25,9 @@ const state = {
         address: "new address",
     },
     dataRequestAsSearch: {
-        keyword: null,
-        roleName: null,
+        keyword: "",
+        roleName: "",
+        idShopCurrent: null,
     },
     idUser: null,
     activeOfPopup: false,
@@ -37,12 +38,12 @@ const state = {
 const mutations = {
     setRequestUser(state, value) { state.requestUser = value },
     setListUser(state, value) { state.listUser = value },
-    setDataRequestAsSearch(state, value) { state.dataRequestAsSearch = value},
+    setDataRequestAsSearch(state, value) { state.dataRequestAsSearch = value },
     setIdUser(state, value) { state.idUser = value },
-    setActiveOfPopup(state, value) { state.activeOfPopup = value},
-    setInactiveBtnSaveOfPopup(state, value) { state.inactiveBtnSaveOfPopup = value},
-    setInactiveBtnUpdateOfPopup(state, value) { state.inactiveBtnUpdateOfPopup = value},
-    setRequestUserAsUpdate(state, requestUser) { state.requestUser = requestUser},
+    setActiveOfPopup(state, value) { state.activeOfPopup = value },
+    setInactiveBtnSaveOfPopup(state, value) { state.inactiveBtnSaveOfPopup = value },
+    setInactiveBtnUpdateOfPopup(state, value) { state.inactiveBtnUpdateOfPopup = value },
+    setRequestUserAsUpdate(state, requestUser) { state.requestUser = requestUser },
 }
 
 const actions = {
@@ -94,8 +95,17 @@ const actions = {
     },
 
     async searchByKeyword({ commit }) {
+        let shop = store.getters['SecurityModule/getShop']
         try {
-            const response = await axios.get("http://localhost:8088/user/searchByKeyword?keyword=" + state.dataRequestAsSearch.keyword + "&roleName=" + state.dataRequestAsSearch.roleName)
+            const response = await axios.get("http://localhost:8088/user/searchByKeyword",
+                {
+                    params: {
+                        keyword: state.dataRequestAsSearch.keyword,
+                        roleName: state.dataRequestAsSearch.roleName, 
+                        idShopCurrent: shop.id,
+                    }
+                }
+            )
             if (response.status == 200) {
                 commit("setListUser", response.data)
             }
@@ -113,13 +123,13 @@ const actions = {
     },
 }
 const getters = {
-   getListUser: state => state.listUser,
-   getRequestUser: state => state.requestUser,
-   getRequestUpdateUser: state => state.requestUpdateUser,
-   getDataRequestAsSearch: state => state.dataRequestAsSearch,
-   getActiveOfPopup: state => state.activeOfPopup,
-   getInactiveBtnSaveOfPopup: state => state.inactiveBtnSaveOfPopup,
-   getInactiveBtnUpdateOfPopup: state => state.inactiveBtnUpdateOfPopup,
+    getListUser: state => state.listUser,
+    getRequestUser: state => state.requestUser,
+    getRequestUpdateUser: state => state.requestUpdateUser,
+    getDataRequestAsSearch: state => state.dataRequestAsSearch,
+    getActiveOfPopup: state => state.activeOfPopup,
+    getInactiveBtnSaveOfPopup: state => state.inactiveBtnSaveOfPopup,
+    getInactiveBtnUpdateOfPopup: state => state.inactiveBtnUpdateOfPopup,
 }
 export default {
     namespaced: true,

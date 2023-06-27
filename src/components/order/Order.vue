@@ -127,6 +127,7 @@ export default {
       "setStateBtnUpdateFormOrder",
       "setIdOrder",
       "setOrder",
+      
       "setDate",
     ]),
     ...mapMutations("AppVueModule", ["setRestartRouterView"]),
