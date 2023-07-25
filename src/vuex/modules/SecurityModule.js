@@ -69,6 +69,7 @@ const actions = {
             const response = await axios.post("http://localhost:8088/security/login", accountLogin)
             commit("setUser", response.data)
             commit("setShop", response.data.shop)
+            commit("setShopAsADMINClick", response.data.shop)
             commit("setAccessToken", response.headers.get("Authorization"))
             localStorage.setItem('user', JSON.stringify(response.data))
             localStorage.setItem('shop', JSON.stringify(response.data.shop))

@@ -144,7 +144,24 @@ export default {
       "setInactiveBtnSaveOfPopup",
       "setInactiveBtnUpdateOfPopup",
       "setIdUser",
+      "setRequestUser",
     ]),
+
+    asUserIsManage() {
+      if (this.getUser.role == "MANAGE") {
+        this.setRequestUser({
+          userName: null,
+          password: null,
+          idShop: this.getShop.id,
+          roleName: "STAFF",
+          name: null,
+          age: 100,
+          phoneNumber: "0000000000",
+          email: null,
+          address: "new address",
+        });
+      }
+    },
 
     ClickOkeFromAlertCommon() {
       this.activeAlertCommon = false;
@@ -174,6 +191,7 @@ export default {
       this.setActiveOfPopup(true);
       this.setInactiveBtnSaveOfPopup(false);
       this.setInactiveBtnUpdateOfPopup(true);
+      this.asUserIsManage();
     },
 
     buttonUpdateUser(id) {

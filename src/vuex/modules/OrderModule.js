@@ -72,7 +72,6 @@ const actions = {
             idProduct: state.order.product.id,
             quantity: state.order.quantity,
         }
-        console.log(data)
         try {
             return await axios.post("http://localhost:8088/order/save/" + shop.id, data)
         } catch (error) {

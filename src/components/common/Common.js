@@ -35,6 +35,6 @@ export default class Common {
             if (currentURL == "http://localhost:8080/product") {
                 store.commit('SecurityModule/setShop', store.getters['SecurityModule/getShopAsADMINClick'])
             }
-        }     
+        }  
     }
 }

@@ -9,7 +9,7 @@ const state = {
     product: {
         id: null,
         name: null,
-        idShop: 1,
+        idShop: 0,
         price: null,
         described: null,
         dateOfManufacture: null,
@@ -27,7 +27,7 @@ const mutations = {
     setStateBtnUpdateFormProduct(state, isBoolean) { state.stateBtnUpdateFormProduct = isBoolean },
     setProduct(state, product) { state.product = product },
     setIdProduct(state, value) { state.idProduct = value },
-    setKeywordForSearchProduct(state, value ) { state.keywordForSearchProduct = value },
+    setKeywordForSearchProduct(state, value) { state.keywordForSearchProduct = value },
 }
 
 const actions = {
@@ -38,7 +38,7 @@ const actions = {
             if (response.status == 200) {
                 commit('setProductList', response.data)
             }
-            
+
         } catch (error) {
             return error.response
         }
@@ -57,9 +57,19 @@ const actions = {
     },
 
     async saveProduct() {
-        const idShop = store.getters["SecurityModule/getShop"].id;
+        const shop = store.getters["SecurityModule/getShop"];
+        const productRequest = {
+            id: null,
+            name: state.product.name,
+            idShop: shop.id,
+            price: state.product.price,
+            described: state.product.described,
+            dateOfManufacture: state.product.dateOfManufacture,
+            expiry: state.product.expiry,
+            origin: state.product.origin,
+        }
         try {
-            return await axios.post('http://localhost:8088/product/save/' + idShop , state.product);
+            return await axios.post('http://localhost:8088/product/save/' + shop.id, productRequest);
         } catch (error) {
             return error.response
         }
@@ -67,8 +77,18 @@ const actions = {
 
     async updateProduct() {
         const idShop = store.getters["SecurityModule/getShop"].id;
+        const productRequest = {
+            id: state.product.id,
+            name: state.product.name,
+            idShop: idShop,
+            price: state.product.price,
+            described: state.product.described,
+            dateOfManufacture: state.product.dateOfManufacture,
+            expiry: state.product.expiry,
+            origin: state.product.origin,
+        }
         try {
-            return await axios.put('http://localhost:8088/product/update/' + idShop, state.product);
+            return await axios.put('http://localhost:8088/product/update/' + idShop, productRequest);
         } catch (error) {
             return error.response
         }

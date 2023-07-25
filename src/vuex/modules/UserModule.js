@@ -27,7 +27,6 @@ const state = {
     dataRequestAsSearch: {
         keyword: "",
         roleName: "",
-        idShopCurrent: null,
     },
     idUser: null,
     activeOfPopup: false,
@@ -116,7 +115,7 @@ const actions = {
 
     async deleteUser() {
         try {
-            return await axios.delete("http://localhost:8088/user/delete/" + state.idUserAsDelete)
+            return await axios.delete("http://localhost:8088/user/delete/" + state.idUser)
         } catch (error) {
             return error.response
         }

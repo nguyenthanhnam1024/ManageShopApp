@@ -43,10 +43,11 @@
         <div>
           <p>
             <label for="select-option"
-              >Select product:<span class="messageError">
-                {{ getFieldsErrorMap.product }}</span
-              ></label
-            >
+            >select product:
+            <span class="messageFieldError">{{
+              fieldsErrorMap.product
+            }}</span></label
+          >
           </p>
           <select id="select-option" class="select" v-model="getOrder.product">
             <option

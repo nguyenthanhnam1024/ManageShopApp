@@ -87,7 +87,6 @@
   
       async confirmYesFromConfirmCommon() {
         const response = await this.saveRole();
-        console.log(response.data)
         this.activeConfirmCommon = false;
         if (response.status == 200) {
           this.setActiveOfPopup(false);

@@ -10,12 +10,7 @@
               fieldsErrorMap.name
             }}</span></label
           >
-          <input
-            type="text"
-            id="name"
-            placeholder="Shop name"
-            v-model="getShop.name"
-          />
+          <input type="text" id="name" v-model="getShop.name" />
         </div>
         <div>
           <label for="Address"
@@ -62,7 +57,7 @@
       @confirmNoFromConfirmCommon="confirmNoFromConfirmCommon"
       @confirmYesFromConfirmCommon="confirmYesFromConfirmCommon"
     />
-    <AlertCommon 
+    <AlertCommon
       :activeAlertCommon="activeAlertCommon"
       :messageAlertCommon="messageAlertCommon"
       @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
@@ -97,7 +92,10 @@ export default {
   methods: {
     ...mapMutations("ShopModule", ["setActiveOfPopup", "setShop"]),
     ...mapActions("ShopModule", ["saveShop", "updateShop"]),
-    ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
+    ...mapMutations("AppVueModule", [
+      "setRestartRouterView",
+      "setFieldsErrorMap",
+    ]),
 
     confirmUpdate() {
       this.activeConfirmCommon = true;
@@ -105,7 +103,7 @@ export default {
     },
 
     ClickOkeFromAlertCommon() {
-      this.activeAlertCommon = false
+      this.activeAlertCommon = false;
     },
 
     resetForm() {
@@ -121,11 +119,11 @@ export default {
     async confirmYesFromConfirmCommon() {
       let response = null;
       if (this.getStateBtnSaveOfForm == false) {
-        response = await this.saveShop()
-      } 
+        response = await this.saveShop();
+      }
       if (this.getStateBtnUpdateOfForm == false) {
-        response = await this.updateShop()
-      } 
+        response = await this.updateShop();
+      }
       this.activeConfirmCommon = false;
       if (response.status == 200) {
         this.setActiveOfPopup(false);
@@ -133,7 +131,6 @@ export default {
         this.resetForm();
       } else {
         if (response.status == 1000) {
-          console.log(response.data)
           this.setFieldsErrorMap(response.data);
         } else {
           this.activeAlertCommon = true;
@@ -165,7 +162,10 @@ export default {
       "getShop",
     ]),
     ...mapGetters("SecurityModule", ["getUser"]),
-    ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
+    ...mapGetters("AppVueModule", [
+      "getRestartRouterView",
+      "getFieldsErrorMap",
+    ]),
 
     fieldsErrorMap() {
       return JSON.parse(JSON.stringify(this.getFieldsErrorMap));

@@ -7,7 +7,8 @@
           <form>
             <div class="form-group">
               <label for="username"
-                >User name:<span class="messageError">
+                >User name:
+                <span class="messageError">
                   {{ getFieldsErrorMap.userName }}</span
                 >
                 <span class="messageError">
@@ -26,7 +27,8 @@
             </div>
             <div class="form-group">
               <label for="password"
-                >Password:<span class="messageError">
+                >Password:
+                <span class="messageError">
                   {{ getFieldsErrorMap.password }}</span
                 ></label
               >
@@ -50,10 +52,11 @@
         <div class="col-md-6">
           <h2>User information</h2>
           <form>
-            <div>
+            <div :class="asUserIsManage">
               <p>
                 <label for="select-shop-option"
-                  >Select shop:<span class="messageError">
+                  >Select shop:
+                  <span class="messageError">
                     {{ getFieldsErrorMap.idShop }}</span
                   ><span class="messageError">
                     {{ getFieldsErrorMap.idShops }}</span
@@ -75,17 +78,17 @@
                 </option>
               </select>
             </div>
-            <div>
+            <div :class="asUserIsManage">
               <p>
                 <label for="select-role-option"
-                  >Select role:<span class="messageError">
+                  >Select role:
+                  <span class="messageError">
                     {{ getFieldsErrorMap.roleName }}</span
                   ></label
                 >
               </p>
               <select
                 id="select-role-option"
-                
                 class="select"
                 v-model="getRequestUser.roleName"
               >
@@ -100,8 +103,8 @@
             </div>
             <div class="form-group">
               <label for="fullname"
-                >Your full name:<span class="messageError">
-                  {{ getFieldsErrorMap.name }}</span
+                >Your full name:
+                <span class="messageError"> {{ getFieldsErrorMap.name }}</span
                 ><span class="messageError">
                   {{ getFieldsErrorMap.names }}</span
                 ></label
@@ -118,7 +121,8 @@
             </div>
             <div class="form-group">
               <label for="email"
-                >Email:<span class="messageError">
+                >Email:
+                <span class="messageError">
                   {{ getFieldsErrorMap.email }}</span
                 ></label
               >
@@ -168,7 +172,7 @@
       :messageAlertCommon="messageAlertCommon"
       @ClickOkeFromAlertCommon="ClickOkeFromAlertCommon"
     />
-    <ConfirmCommon 
+    <ConfirmCommon
       :activeConfirmCommon="activeConfirmCommon"
       :messageConfirmCommon="messageConfirmCommon"
       @confirmYesFromConfirmCommon="confirmYesFromConfirmCommon"
@@ -204,7 +208,10 @@ export default {
   },
 
   methods: {
-    ...mapMutations("AppVueModule", ["setRestartRouterView", "setFieldsErrorMap"]),
+    ...mapMutations("AppVueModule", [
+      "setRestartRouterView",
+      "setFieldsErrorMap",
+    ]),
     ...mapMutations("UserModule", ["setActiveOfPopup", "setRequestUser"]),
     ...mapActions("UserModule", ["saveUserFromAdmin", "updateUserFromADMIN"]),
     ...mapActions("ShopModule", ["fetchShopList"]),
@@ -213,14 +220,14 @@ export default {
     confirmNoFromConfirmCommon() {
       this.activeConfirmCommon = false;
     },
-    
+
     async confirmYesFromConfirmCommon() {
       let response = null;
       if (this.getInactiveBtnSaveOfPopup == false) {
         response = await this.saveUserFromAdmin();
       }
       if (this.getInactiveBtnUpdateOfPopup == false) {
-        response= await this.updateUserFromADMIN();
+        response = await this.updateUserFromADMIN();
       }
       this.activeConfirmCommon = false;
       if (response.status == 200) {
@@ -284,7 +291,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("AppVueModule", ["getRestartRouterView", "getFieldsErrorMap"]),
+    ...mapGetters("AppVueModule", [
+      "getRestartRouterView",
+      "getFieldsErrorMap",
+    ]),
     ...mapGetters("UserModule", [
       "getActiveOfPopup",
       "getInactiveBtnSaveOfPopup",
@@ -293,9 +303,21 @@ export default {
     ]),
     ...mapGetters("ShopModule", ["getShopList"]),
     ...mapGetters("RoleModule", ["getRoleNames"]),
+    ...mapGetters("SecurityModule", ["getUser"]),
 
     noInput() {
       if (this.getInactiveBtnUpdateOfPopup == false) {
+        return {
+          "no-input": true,
+        };
+      }
+      return {
+        "no-input": false,
+      };
+    },
+
+    asUserIsManage() {
+      if (this.getUser.role == "MANAGE") {
         return {
           "no-input": true,
         };
