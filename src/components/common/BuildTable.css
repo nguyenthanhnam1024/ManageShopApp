@@ -1,0 +1,40 @@
+.wrapper-search input {
+    width: 220px;
+    margin-left: auto;
+  }
+  .wrapper-search {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  .div-create-object {
+    margin: 5px;
+  }
+  div div span {
+    font-size: 140%;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: blue;
+    margin-left: 0%;
+  }
+  .btn-create {
+    color: #fff;
+    background-color: rgb(3, 145, 18);
+    padding: 5px;
+    width: 150px;
+    border: hidden;
+    border-radius: 5px;
+    font-size: 130%;
+    position: absolute;
+    margin-top: -15px;
+  }
+  .corver {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+  .table-wrapper {
+    height: 400px;
+    overflow-y: scroll;
+    border: 1px solid greenyellow;
+  }

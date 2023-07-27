@@ -1,26 +1,57 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Navbar :class="manageActiveNavbar" />
+    <router-view :key="restartRouterView" class="router"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from "./components/Navbar.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters("AppVueModule", ["getInactiveNavbar"]),
+    ...mapGetters("AppVueModule", ["getRestartRouterView"]),
+
+    restartRouterView() {
+      return this.getRestartRouterView;
+    },
+
+    manageActiveNavbar() {
+      return {
+        status: this.getInactiveNavbar,
+      };
+    },
+  },
+
   components: {
-    HelloWorld
-  }
-}
+    Navbar,
+  },
+};
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+div {
+  margin: 10px;
+}
+.status {
+  display: none;
+}
+.router {
+  overflow-y: scroll;
+  height: 540.5px;
 }
 </style>
